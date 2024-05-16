@@ -1,0 +1,12 @@
+{% extends 'modalBase.html.twig' %}
+
+{% block title %}{{ "Hauteskundea editatzen" | trans }} {% endblock %}
+
+{% block body %}
+    {{ include('user/_form.html.twig') }}
+{% endblock %}
+
+
+{% block stream_success %}
+    {{ include('_frameSuccessStreams.html.twig') }}
+{% endblock %}

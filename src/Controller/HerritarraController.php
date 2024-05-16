@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Herritarra;
+use App\Entity\User;
 use App\Form\FitxategiaType;
 use App\Form\HerritarraType;
 use App\Form\OrdezkatuType;
@@ -205,6 +206,20 @@ class HerritarraController extends AbstractController
         ]);
     }
 
+    private function getHurrengoa(HerritarraRepository $herritarraRepository, $dist, $secc, $mesa, $code): Herritarra
+    {
+        $nextCode = $this->getNextCode($code);
+
+        /** @var Herritarra $nextHerritarra */
+        $nextHerritarra = $herritarraRepository->findNextHerritarra($dist, $secc, $mesa, $nextCode);
+
+        if (0 === $nextHerritarra->getActive()) {
+            return $nextHerritarra;
+        }
+
+        return $this->getHurrengoa($herritarraRepository, $dist, $secc, $mesa, $nextHerritarra->getCargofinal());
+    }
+
     /**
      * @throws \Exception
      */
@@ -212,12 +227,12 @@ class HerritarraController extends AbstractController
     public function ordezkatu(
         Request $request,
         Herritarra $herritarra,
+        HerritarraRepository $herritarraRepository,
         int $hauteskundeaid,
         EntityManagerInterface $entityManager,
         MailerInterface $mailer
     ): Response {
-        $nextCode = $this->getNextCode($herritarra->getCargofinal());
-        $nextHerritarra = $entityManager->getRepository(Herritarra::class)->findNextHerritarra($herritarra->getDist(), $herritarra->getSecc(), $herritarra->getMesa(), $nextCode);
+        $nextHerritarra = $this->getHurrengoa($herritarraRepository, $herritarra->getDist(), $herritarra->getSecc(), $herritarra->getMesa(), $herritarra->getCargofinal());
 
         $form = $this->createForm(OrdezkatuType::class, $herritarra, [
             'action' => $this->generateUrl('app_herritarra_ordezkatu', ['id' => $herritarra->getId(), 'hauteskundeaid' => $hauteskundeaid]),
@@ -245,25 +260,27 @@ class HerritarraController extends AbstractController
 
             $entityManager->flush();
 
-            $email = (new TemplatedEmail())
-                ->from('iibarguren@pasaia.net')
-                ->to('iibarguren@pasaia.net')
-                // ->cc('cc@example.com')
-                // ->bcc('bcc@example.com')
-                // ->replyTo('fabien@example.com')
-                ->priority(Email::PRIORITY_HIGH)
-                ->subject($herritarra->getHauteskundea().'-an ordezkapen berria.')
-                ->htmlTemplate('herritarra/_email_ordezkatu.html.twig')
-                ->locale('eu')
-                ->context([
-                    'herritarra' => $herritarra,
-                    'nextHerritarra' => $nextHerritarra,
-                ]);
+            // Begiratu jakinarazpenentzako helbideak gehituta dituen
+            /** @var User $user */
+            $user = $request->getUser();
+            if (('' !== $user->getMailfrom()) && ('' !== $user->getMailto())) {
+                $email = (new TemplatedEmail())
+                    ->from($user->getMailfrom())
+                    ->to($user->getMailfrom())
+                    ->priority(Email::PRIORITY_HIGH)
+                    ->subject($herritarra->getHauteskundea().'-an ordezkapen berria.')
+                    ->htmlTemplate('herritarra/_email_ordezkatu.html.twig')
+                    ->locale('eu')
+                    ->context([
+                        'herritarra' => $herritarra,
+                        'nextHerritarra' => $nextHerritarra,
+                    ]);
 
-            try {
-                $mailer->send($email);
-            } catch (TransportExceptionInterface $e) {
-                throw new \RuntimeException($e->getMessage());
+                try {
+                    $mailer->send($email);
+                } catch (TransportExceptionInterface $e) {
+                    throw new \RuntimeException($e->getMessage());
+                }
             }
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {

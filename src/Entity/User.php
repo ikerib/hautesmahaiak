@@ -6,14 +6,11 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -46,14 +43,20 @@ class User implements UserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    public function __construct()
-    {
-        $this->auditlogs = new ArrayCollection();
-    }
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mailfrom = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mailto = null;
 
     /*** ERLAZIOAK ****************************************************************************************************/
 
     /*** FUNTZIOAK ****************************************************************************************************/
+
+    public function __construct()
+    {
+        $this->auditlogs = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -218,6 +221,30 @@ class User implements UserInterface
                 $auditlog->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMailfrom(): ?string
+    {
+        return $this->mailfrom;
+    }
+
+    public function setMailfrom(?string $mailfrom): static
+    {
+        $this->mailfrom = $mailfrom;
+
+        return $this;
+    }
+
+    public function getMailto(): ?string
+    {
+        return $this->mailto;
+    }
+
+    public function setMailto(?string $mailto): static
+    {
+        $this->mailto = $mailto;
 
         return $this;
     }
