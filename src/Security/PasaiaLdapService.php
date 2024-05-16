@@ -356,9 +356,12 @@ class PasaiaLdapService
 
     private function checkIsInArray($bilaketArray, $bilatuBeharrekoElementua): bool
     {
+        $elements = explode(', ', $bilatuBeharrekoElementua);
         foreach ($bilaketArray as $subArray) {
-            if (in_array($bilatuBeharrekoElementua, $subArray, true)) {
-                return true;
+            foreach ($elements as $element) {
+                if (in_array($element, $subArray, true)) {
+                    return true;
+                }
             }
         }
 
