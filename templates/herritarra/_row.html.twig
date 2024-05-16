@@ -1,0 +1,53 @@
+{% if herritarra.active == "1" %}
+<tr class="bg-green-200 hover:bg-green-500 dark:hover:bg-green-700" id="herritarra-list-item-{{ herritarra.id }}">
+    {% elseif herritarra.active == "-1" %}
+<tr class="bg-red-200 hover:bg-red-500 hover:bg-red-100 dark:hover:bg-red-700"
+    id="herritarra-list-item-{{ herritarra.id }}">
+    {% else %}
+<tr class="hover:bg-gray-100 dark:hover:bg-gray-700" id="herritarra-list-item-{{ herritarra.id }}">
+    {% endif %}
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.nombre }}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.apellido1 }}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.apellido2 }}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.ident }}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.dist }}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.secc }}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.mesa }}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.nlocal }}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {#        {{ herritarra.nlista }} #}
+    </td>
+    <td class="p-4 text-base font-small whitespace-nowrap {% if herritarra.active != "1" %} text-black hover:text-gray-900 dark:text-white {% else %} text-gray-900 dark:text-black dark:hover:text-white hover:text-white{% endif %}">
+        {{ herritarra.cargofinal }}
+    </td>
+
+    <td class="px-4 py-3 flex items-center justify-end">
+        {% if herritarra.active == 1 %}
+            <a
+                    href="{{ path('app_herritarra_ordezkatu', {'id': herritarra.id, 'hauteskundeaid': hauteskundea.id}) }}"
+                    data-turbo-frame="modal"
+                    class="px-3 py-2 mr-2 text-xs font-small text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                {{ ux_icon('mdi:user-off', {'class': 'w-4 h-4'}) }}
+                Ordezkatu
+            </a>
+        {% endif %}
+    </td>
+</tr>
+
+

@@ -1,0 +1,180 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Hautesmahaiak{% endblock %}
+
+{% block body %}
+
+    {% block header %}{% endblock %}
+
+    {% if hauteskundea is null %}
+        <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0">
+            <h2 class="text-4xl font-extrabold">Ez dago hauteskunde aktiborik.</h2>
+        </div>
+    {% else %}
+
+        <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto pt:mt-0">
+            <div class="mb-10">
+                <h1 class="text-3xl font-bold dark:text-white">{{ hauteskundea }}</h1>
+            </div>
+            <div class="">
+                {{ form_start(form) }}
+                <div class="relative max-w-sm">
+                    {{ form_row(form.ident) }}
+                </div>
+                <div class="relative max-w-sm">
+                    <div class="datepicker-frontend-top ml-1 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none topMinus15 mr-2">
+                        <svg class="w-4 h-4 text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"></path>
+                        </svg>
+                    </div>
+                    {{ form_row(form.jaioteguna) }}
+                </div>
+                <div class="relative max-w-sm">
+                    {{ form_row(form.submit) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+
+        {% if mahaiak is defined %}
+
+            {% if mahaiak is empty %}
+                <div class="">
+                    <div class="">
+                        <h3 class="text-3xl font-bold dark:text-white">{{ "Ez zara hautatua izan." | trans}}</h3>
+                        <p>&nbsp;</p>
+                        {% if app.request.locale == "eu" %}
+                            <p>Zure izendapena ez agertzeak esan nahi du ez zaituztela izendatu ez titular gisa, ezta 1. edo 2. ordezko gisa ere.</p>
+                            <p>Hala ere, aipatutako bi ordezkoez gain, zozketak beste 11 ordezko gordetzen ditu kargu bakoitzerako. Hauteskunde Batzordeak izendatutako pertsonen desenkusak onartzen dituenean, ordezkoen txandarekin jarraitu behar izaten da.</p>
+                            <p>Hori dela eta, baliteke hasiera batean kontsulta honetan zure izena ez agertzea, baina jakin ezazu egoera hori aldatu egin daitekeela hauteskundeak egin bitartean.</p>
+                        {% else %}
+
+                            <p>Nota importante: el hecho de que no aparezcas en esta consulta significa que no has sido designado/a ni como titular ni como primer o segundo/a suplente.</p>
+                            <p>No obstante, además de los dos suplentes citados, el sorteo almacena otros once suplentes para cada cargo. Si se diera el caso de que la Junta Electoral aceptara excusas de las personas nombradas en primera instancia, podría ser necesario correr el turno a los/las siguientes suplentes.</p>
+                            <p>Por ello, existe la posibilidad de que en esta consulta tu nombre no aparezca, pero esta situación puede cambiar durante todo el periodo hasta la celebración de las elecciones.</p>
+
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="flex flex-col mt-6">
+                    <div class="overflow-x-auto rounded-lg">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden shadow sm:rounded-lg">
+
+                                {% if app.request.locale == "eu" %}
+                                    <h3 class="text-3xl font-bold dark:text-white">ONDORENGO MAHAIAN PARTE HARTZEKO IZENDATUA IZAN ZARA</h3>
+                                {% else %}
+                                    <h3 class="text-3xl font-bold dark:text-white">HAS SIDO DESIGNADO/A PARA FORMAR PARTE DE LA SIGUIENTE MESA</h3>
+                                {% endif %}
+
+                                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-900 uppercase ">
+                                            {{ "Kodea" | trans}}
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-900 uppercase ">
+                                            {{ "Izen Abizenak" | trans}}
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-900 uppercase ">
+                                            {{ "Kargua" | trans}}
+                                        </th>
+                                        <th scope="col" class="p-4 text-xs font-medium tracking-wider text-left text-gray-900 uppercase ">
+                                            {{ "Mahaia" | trans}}
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="bg-white dark:bg-gray-800">
+                                    {% for mahaia in mahaiak %}
+                                    <tr>
+                                        <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap ">
+                                            {{ mahaia.dist ~ '-' ~ mahaia.secc ~ '-' ~ mahaia.mesa }}
+                                        </td>
+                                        <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap ">
+                                            {{ mahaia.nombre ~ ' ' ~ mahaia.apellido1 ~ ' ' ~ mahaia.apellido2 }}
+                                        </td>
+                                        <td class="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap ">
+                                            {% if app.request.locale == 'eu' %}
+                                                {{ mahaia.kargua }}
+                                            {% else %}
+                                                {{ mahaia.cargo }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap ">
+                                            {% if app.request.locale == 'eu' %}
+                                                {{ mahaia.nlocalb ~ ' ' ~ mahaia.helbidea ~ ' ' ~ mahaia.barrutia }}
+                                            {% else %}
+                                                {{ mahaia.nlocal ~ ' ' ~ mahaia.helbidea ~ ' ' ~ mahaia.barrutia }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="">
+                        <p class="mb-2.5">{{ "mezua" | trans }}</p>
+                        <p class="text-center">
+                            <a target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                               href="https://bideoak2.euskadi.eus/2024/03/04/news_92205/Manual_integrantes_mesa_electoral__Web_Eusk_.pdf"
+                            >{{ "Euskaraz" | trans }}</a>
+                            &nbsp;
+                            &nbsp;
+                            <a target="_blank" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                               href="https://bideoak2.euskadi.eus/2024/03/04/news_92205/Manual_integrantes_mesa_electoral__Web_Cast_.pdf"
+                            >{{ "Erdaraz" | trans }}</a>
+                        </p>
+                    </div>
+                </div>
+
+                {% if app.request.locale == "eu" %}
+                    <div class="">&nbsp</div>
+                    <div class="">&nbsp</div>
+                    <div class="">
+                        <div class="">
+                            <h3 class="text-lg font-bold dark:text-white">ALEGAZIOAK ETA ORDEZKAPENAK</h3>
+
+
+                            <p>Zozketako izendapenen aurkako alegazioak Donostiako Eskualdeko Hauteskunde Batzordean aurkeztu ahal izango dira:</p>
+
+                            <ul>
+                                <li>Kalkutako Teresa Plaza 1 (Atotxa)</li>
+                                <li>Aitzakia alegatzeko eskabide-orria: <a target="_blank" href="https://www.euskadi.eus/contenidos/informacion/w_in_24_pv_calend_miemb_mesa/eu_def/adjuntos/19.EHMM_4.3_anv_edit.pdf">Euskaraz</a> -
+                                    <a target="_blank" href="https://www.euskadi.eus/contenidos/informacion/w_in_24_pv_miemb_guia/es_def/adjuntos/20.EHMM_4.3_rev_edit.pdf">Gaztelaniaz</a></li>
+                                <li>Tel: 943 000 728 / Fax: 943 000 702</li>
+                                <li>Helbide elektronikoa: <a target="_blank" href="mailto:alegaciones-JuntaElectoral-Donostia@justizia.eus">alegaciones-JuntaElectoral-Donostia@justizia.eus</a></li>
+                                <li>Elektronikoki ere aurkez daitezke webgune honetan: <a target="_blank" href="https://www.mesaselectorales.es/web-excusas-admin">https://www.mesaselectorales.es/web-excusas-admin</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="">&nbsp</div>
+                    <div class="">&nbsp</div>
+                    <div class="">
+                        <div class="">
+                            <h3 class="text-lg font-bold dark:text-white">ALEGACIONES Y SUSTITUCIONES</h3>
+                            <p>Las alegaciones a las designaciones del sorteo se podrán presentar en la Junta Electoral de Zona de Donostia/San Sebastián:</p>
+
+                            <ul>
+                                <li>Pza Teresa de Calcuta 1 (Atotxa).</li>
+                                <li>Formulario para presentar alegaciones: <a target="_blank" href="https://www.euskadi.eus/contenidos/informacion/w_in_24_pv_calend_miemb_mesa/eu_def/adjuntos/19.EHMM_4.3_anv_edit.pdf">Euskara</a> -
+                                    <a target="_blank" href="https://www.euskadi.eus/contenidos/informacion/w_in_24_pv_miemb_guia/es_def/adjuntos/20.EHMM_4.3_rev_edit.pdf">Castellano</a></li>
+                                <li>Tel: 943 000 728 / Fax: 943 000 702</li>
+                                <li>E-mail: <a target="_blank" href="mailto:alegaciones-JuntaElectoral-Donostia@justizia.eus">alegaciones-JuntaElectoral-Donostia@justizia.eus</a></li>
+                                <li>También se pueden presentar electrónicamente en esta web: <a target="_blank" href="https://www.mesaselectorales.es/web-excusas-admin">https://www.mesaselectorales.es/web-excusas-admin</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    </div>
+{#    {% endif %}#}
+
+{% endblock %}

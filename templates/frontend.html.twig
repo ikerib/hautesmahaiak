@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="eu" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ordezkatu">
+    <meta name="author" content="Iker Ibarguren">
+    <meta name="view-transition">
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    <title>Hautesmahaiak</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('vendor/trix/dist/trix.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles/trix.css') }}">
+    {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('frontend') }}
+        {% endblock %}
+    {% endblock %}
+    <script>
+        document.documentElement.classList.remove('dark');
+    </script>
+</head>
+{% block bodytag %}
+<body class="" data-turbo="false">
+
+<div class="flex pt-16 overflow-hidden">
+
+    <div id="main-content" class="flex flex-col relative w-full x-auto h-screen overflow-y-auto">
+        <main>
+            {% block body %}
+            {% endblock %}
+        </main>
+
+        <footer class="fixed bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6">
+
+            <p class="text-sm text-center text-gray-900 mb-4 md:mb-0">
+                © 2024 <a href="https://pasaia.eus//" class="hover:underline" target="_blank">Pasaiako udala P2006900A, Donibane kalea 19, 20110, Pasaia  Tel. 943 34 40 34</a>.
+            </p>
+            <ul class="flex flex-wrap items-center justify-center">
+                <li><a href="../LICENSE" target="_blank" class="mr-4 text-sm font-normal text-gray-900 hover:underline md:mr-6 ">Lizentzia</a></li>
+                <li><a href="https://www.pasaia.eus/eu/DBLO" target="_blank" class="mr-4 text-sm font-normal text-gray-900 hover:underline md:mr-6 ">Datuen Babesa</a></li>
+                <li><a href="https://www.pasaia.eus/eu/telefonoak" target="_blank" class="text-sm font-normal text-gray-900 hover:underline ">Kontaktua</a></li>
+            </ul>
+        </footer>
+
+    </div>
+</div>
+
+<div id="flash-container">
+    {{ include('_flashes.html.twig') }}
+</div>
+{% block modalcomponent %}
+    <twig:Modal :closeButton="true">
+        <twig:block name="full_content">
+            <turbo-frame
+                    id="modal"
+                    data-modala-target="modalEdukia"
+                    data-action="turbo:before-fetch-request->modala#showLoading"
+            ></turbo-frame>
+        </twig:block>
+        <twig:block name="loading_template">
+            <div class="bg-space-pattern bg-cover rounded-lg p-8">
+                <div class="space-y-2">
+                    <div class="h-4 bg-gray-700 rounded w-3/4 animate-pulse"></div>
+                    <div class="h-4 bg-gray-700 rounded animate-pulse"></div>
+                    <div class="h-4 bg-gray-700 rounded animate-pulse"></div>
+                    <div class="h-4"></div>
+                    <div class="h-4 bg-gray-700 rounded animate-pulse"></div>
+                    <div class="h-4 bg-gray-700 rounded w-1/2 animate-pulse"></div>
+                    <div class="h-4 bg-gray-700 rounded w-3/4 animate-pulse"></div>
+                    <div class="h-4"></div>
+                    <div class="h-4 bg-gray-700 rounded w-1/2 animate-pulse"></div>
+                </div>
+            </div>
+        </twig:block>
+    </twig:Modal>
+{% endblock %}
+<div class="
+    text-coolGray-800
+    text-red-800
+    text-yellow-800
+    text-green-800
+    text-blue-800
+    text-indigo-800
+    text-violet-800
+    text-pink-800
+    border-coolGray-300
+    border-red-300
+    border-yellow-300
+    border-green-300
+    border-blue-300
+    border-indigo-300
+    border-violet-300
+    border-pink-300
+    bg-coolGray-50
+    bg-red-50
+    bg-yellow-50
+    bg-green-50
+    bg-blue-50
+    bg-indigo-50
+    bg-violet-50
+    bg-pink-50
+    dark:text-coolGray-400
+    dark:text-red-400
+    dark:text-yellow-400
+    dark:text-green-400
+    dark:text-blue-400
+    dark:text-indigo-400
+    dark:text-violet-400
+    dark:text-pink-400
+    dark:border-coolGray-800
+    dark:border-red-800
+    dark:border-yellow-800
+    dark:border-green-800
+    dark:border-blue-800
+    dark:border-indigo-800
+    dark:border-violet-800
+    "></div>
+{% endblock %}
+</body>
+</html>

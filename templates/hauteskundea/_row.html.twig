@@ -1,0 +1,57 @@
+<tr class="hover:bg-gray-100 dark:hover:bg-gray-700" id="hauteskundea-list-item-{{ hauteskundea.id }}" >
+    <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ hauteskundea.id }}</td>
+    <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ hauteskundea.izena }}</td>
+    <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        {% if hauteskundea.active %}
+            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
+                {{ "Bai" | trans }}
+            </span>
+        {% else %}
+            <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-md border border-red-100 dark:border-red-400 dark:bg-gray-700 dark:text-red-400">
+                {{ "Ez" | trans }}
+            </span>
+        {% endif %}
+    </td>
+    <td class="px-4 py-3 flex items-center justify-end">
+        <a
+                href="{{ path('app_herritarra_index', {'hauteskundeaid': hauteskundea.id}) }}"
+                target="_top"
+                class="px-3 py-2 mr-2 text-xs font-medium text-center inline-flex items-center text-white bg-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19l2.757 -7.351a1 1 0 0 1 .936 -.649h12.307a1 1 0 0 1 .986 1.164l-.996 5.211a2 2 0 0 1 -1.964 1.625h-14.026a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2" /></svg>
+            {{ "Zabaldu" | trans }}
+        </a>
+        <a
+                href="{{ path('app_hauteskundea_edit', {'id': hauteskundea.id}) }}"
+                data-turbo-frame="modal"
+                class="px-3 py-2 mr-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+            {{ "Editatu" | trans }}
+        </a>
+        <twig:Modal :allowSmallWidth="true">
+            <twig:block name="trigger">
+                <button
+                        class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                        data-action="modala#open"
+                >
+                    <svg class="w-4 h-4 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                    </svg>
+                    &nbsp;{{ "Ezabatu" | trans }}</button>
+            </twig:block>
+
+            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 9v4" /><path d="M12 16v.01" /></svg>
+
+            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                {{ "Ziur ezabatu nahi duzula?" | trans }}
+            </h3>
+
+            <div class="flex justify-between">
+                <form method="dialog">
+                    <twig:Button variant="link">{{ "Ezeztatu" | trans }}</twig:Button>
+                </form>
+                {{ include('hauteskundea/_delete_form.html.twig') }}
+            </div>
+        </twig:Modal>
+    </td>
+</tr>

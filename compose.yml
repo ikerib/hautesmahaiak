@@ -1,0 +1,45 @@
+services:
+  app:
+    container_name: hautesmahaiak
+    build:
+      context: ./docker
+      args:
+        USER: appuser
+        UID: ${UID}
+    volumes:
+      - ./:/var/www/html
+      # dev php.ini
+      #- ./docker/php.ini:/usr/local/etc/php/php.ini-development
+      # prod php.ini
+      #- ./docker/php.ini:/usr/local/etc/php/php.ini-production
+      - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./docker/my-php.ini:/usr/local/etc/php/conf.d/my-php.ini
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      XDEBUG_CLIENT_PORT: 9003
+    ports:
+      - '80:80'
+    depends_on:
+      - db
+
+  db:
+    container_name: hautesmahaiak-mysql
+    image: mysql:8.2.0
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - hautesmahaiak-mysql-data:/var/lib/mysql
+    command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+
+volumes:
+  hautesmahaiak-mysql-data:
+
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Herritarra{% endblock %}
+
+{% block body %}
+    <h1>Edit Herritarra</h1>
+
+    {{ include('herritarra/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_herritarra_index') }}">back to list</a>
+
+    {{ include('herritarra/_delete_form.html.twig') }}
+{% endblock %}

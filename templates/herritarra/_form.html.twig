@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <twig:Button
+            formnovalidate
+            variant="success"
+            class=""
+    >
+        {{ button_label|default('Gorde') }}
+    </twig:Button>
+{{ form_end(form) }}

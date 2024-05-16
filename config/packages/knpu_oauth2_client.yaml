@@ -1,0 +1,11 @@
+knpu_oauth2_client:
+  clients:
+    # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
+    giltza:
+      type: generic
+      provider_class: Giltza\OAuth2\Client\Provider\OauthGiltzaProvider
+      client_id: "%env(CLIENT_ID)%"
+      client_secret: "%env(CLIENT_SECRET)%"
+      redirect_route: oauth_check
+      redirect_params: { }
+      use_state: true

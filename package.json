@@ -1,0 +1,6 @@
+{
+  "main": "tailwind.config.js",
+  "dependencies": {
+    "flowbite": "^2.3.0"
+  }
+}

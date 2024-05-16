@@ -1,0 +1,50 @@
+FROM php:8.3-apache as app
+
+# Install packages and PHP extensions
+RUN apt update \
+    # common libraries and extensions
+    && apt install -y git acl openssl openssh-client wget zip \
+    && apt install -y libpng-dev zlib1g-dev libzip-dev libxml2-dev libicu-dev \
+    && apt install -y libldap-dev libldap2-dev \
+    && docker-php-ext-install intl pdo gd zip \
+    # for LDAP \
+    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+    && docker-php-ext-install ldap \
+    # for MySQL
+    && docker-php-ext-install pdo_mysql \
+    # XDEBUG and APCu
+    && pecl install apcu \
+    # enable Docker extensions
+    && docker-php-ext-enable --ini-name 05-opcache.ini opcache apcu \
+    && apt-get install -y nodejs npm
+
+RUN mkdir -p /var/www/html
+COPY . /var/www/html
+
+# Install and update composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# RUN needed commands
+RUN composer install --prefer-dist --no-scripts --no-interaction --no-dev
+
+## Create var folder and assign to Apache user
+RUN mkdir -p /var/www/html/var
+RUN chown -R www-data:www-data /var/www/html/var
+
+RUN composer install --prefer-dist --no-scripts --no-interaction --no-dev
+RUN npm install
+
+FROM app
+# Update Apache config
+COPY ./docker/default.conf /etc/apache2/sites-available/default.conf
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+    && a2enmod rewrite \
+    && a2dissite 000-default \
+    && a2ensite default \
+    && service apache2 restart
+
+WORKDIR /var/www/html
+
+
+

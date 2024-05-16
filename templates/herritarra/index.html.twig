@@ -1,0 +1,265 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Herritarrak{% endblock %}
+
+{% block body %}
+    <div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <div class="w-full mb-1">
+            <div class="mb-4">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+                    {% block page_title %} Herritarrak {% endblock %}
+                </h1>
+            </div>
+            {% block page_header %}
+                <form class="sm:pr-3"
+                      action="{{ path('app_herritarra_index', {'hauteskundeaid': hauteskundea.id}) }}"
+                      method="GET"
+                      data-controller="autosubmit"
+                      data-turbo-frame="herritarra-list"
+                      data-turbo-stream
+                >
+                    <div class="w-full max-w-8xl mx-auto mb-5">
+                        <div class="border bg-gray-50 shadow-sm border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-lg p-4 flex flex-col sm:flex-row items-center justify-between">
+                            <div class="w-full sm:w-auto sm:flex">
+                                <div class="relative w-full sm:w-48 md:w-64 lg:w-96 sm:mr-3 mb-3 sm:mb-0">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                             viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                  clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                    <input
+                                            type="search"
+                                            name="query"
+                                            value="{{ app.request.query.get('query') }}"
+                                            aria-label="Bilatu"
+                                            placeholder="Bilatu"
+                                            class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            data-action="autosubmit#debouncedSubmit"
+                                            autofocus
+                                            autocomplete="off"
+                                    >
+                                    <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="items-center hidden sm:flex">
+                                {# Egoera select #}
+                                <input data-action="autosubmit#submit" type="checkbox"
+{#                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"#}
+                                    class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+                                    name="egoeras[]" value="-1" id="type-search-1"
+                                    {{ 1 in searchEgoeras ? 'checked' : '' }}
+                                >
+                                    <label for="type-search-1" class="mr-2 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Baja</label>
+                                <input data-action="autosubmit#submit" type="checkbox"
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                       name="egoeras[]" value="0" id="type-search-0"
+                                        {{ 0 in searchEgoeras ? 'checked' : '' }}
+                                >
+                                <label for="type-search-0" class="mr-2 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ordezkoa</label>
+                                <input data-action="autosubmit#submit" type="checkbox"
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                       name="egoeras[]" value="1" id="type-search-1"
+                                        {{ -1 in searchEgoeras ? 'checked' : '' }}
+                                >
+                                <label for="type-search-1" class="mr-2 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Aktibo</label>
+                                &nbsp;
+                                {# DIST select #}
+                                <button id="filterDropdownButton"
+                                        data-dropdown-toggle="filterDropdown"
+                                        class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                        type="button"
+                                >
+                                    {{ ux_icon('ri:filter-fill', {'class':"h-4 w-4 mr-2 text-gray-400"}) }}
+                                    DIST
+                                    {{ ux_icon('ant-design:down-outlined', {'class':"-mr-1 ml-1.5 w-5 h-5"}) }}
+                                </button>
+                                <div id="filterDropdown"
+                                     class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700"
+                                     style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(1222px, 84px);"
+                                     data-popper-placement="bottom"
+                                >
+                                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Dist</h6>
+                                    <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
+                                        {% for dist in dists %}
+                                            <li class="flex items-center">
+                                                <input
+                                                        data-action="autosubmit#submit"
+                                                        type="checkbox"
+                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        name="dists[]"
+                                                        value="{{ dist.dist }}"
+                                                        id="dist-search-{{ dist.dist }}"
+                                                        {{ dist.dist in searchDists ? 'checked' : '' }}
+                                                >
+                                                <label for="dist-search-{{ dist.dist }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ dist.dist }}</label>
+                                            </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                </div>
+
+                                {# SECC select #}
+                                <button id="filterDropdownButton2"
+                                        data-dropdown-toggle="filterDropdown2"
+                                        class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                        type="button"
+                                >
+                                    {{ ux_icon('ri:filter-fill', {'class':"h-4 w-4 mr-2 text-gray-400"}) }}
+                                    SECC
+                                    {{ ux_icon('ant-design:down-outlined', {'class':"-mr-1 ml-1.5 w-5 h-5"}) }}
+                                </button>
+                                <div id="filterDropdown2"
+                                     class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700"
+                                     style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(1222px, 84px);"
+                                     data-popper-placement="bottom"
+                                >
+                                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Dist</h6>
+                                    <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
+                                        {% for secc in seccs %}
+                                            <li class="flex items-center">
+                                                <input
+                                                        data-action="autosubmit#submit"
+                                                        type="checkbox"
+                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        name="seccs[]"
+                                                        value="{{ secc.secc }}"
+                                                        id="secc-search-{{ secc.secc }}"
+                                                        {{ secc.secc in searchSeccs ? 'checked' : '' }}
+                                                >
+                                                <label for="dist-search-{{ secc.secc }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ secc.secc }}</label>
+                                            </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                </div>
+
+                                {# MAHAIA select #}
+                                <button id="filterDropdownButton3"
+                                        data-dropdown-toggle="filterDropdown3"
+                                        class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                        type="button"
+                                >
+                                    {{ ux_icon('ri:filter-fill', {'class':"h-4 w-4 mr-2 text-gray-400"}) }}
+                                    MAHAIA
+                                    {{ ux_icon('ant-design:down-outlined', {'class':"-mr-1 ml-1.5 w-5 h-5"}) }}
+                                </button>
+                                <div id="filterDropdown3"
+                                     class="z-10 hidden w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700"
+                                     style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(1222px, 84px);"
+                                     data-popper-placement="bottom"
+                                >
+                                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Dist</h6>
+                                    <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
+                                        {% for mesa in mesas %}
+                                            <li class="flex items-center">
+                                                <input
+                                                        data-action="autosubmit#submit"
+                                                        type="checkbox"
+                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                        name="mesas[]"
+                                                        value="{{ mesa.mesa }}"
+                                                        id="mesa-search-{{ mesa.mesa }}"
+                                                        {{ mesa.mesa in searchSeccs ? 'checked' : '' }}
+                                                >
+                                                <label for="dist-search-{{ mesa.mesa }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ mesa.mesa }}</label>
+                                            </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                </div>
+
+                                &nbsp;
+                                <twig:Button
+                                        tag="a"
+                                        href="{{ path('app_herritarra_fitxategia', {'hauteskundeaid': hauteskundea.id}) }}"
+                                        data-turbo-frame="modal"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-primary-800"
+                                >
+                                    <span>Igo fitxategia</span>
+                                    {{ ux_icon('material-symbols:file-upload', {'class': 'inline'}) }}
+                                </twig:Button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            {% endblock %}
+        </div>
+    </div>
+    {% block herritarra_list_frame %}
+        <turbo-frame id="herritarra-list" data-turbo-action="advance" class="aria-busy:opacity-50">
+            <div class="flex flex-col">
+                <div class="overflow-x-auto">
+                    <div class="inline-block min-w-full align-middle">
+                        <div class="overflow-hidden shadow">
+                            <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600"
+                                   id="crud-list">
+                                <thead class="bg-gray-100 dark:bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                            Izena
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        1º Abizena
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        2º Abizena
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        N.A.N.
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        Dist
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        SECC
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        Mahaia
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        Non
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        Nolista.
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                        Kargua
+                                    </th>
+                                    <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"></th>
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                                {% for herritarra in herritarras %}
+                                    {{ include('herritarra/_row.html.twig') }}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sticky bottom-0 right-0 items-center w-full p-4 bg-white border-t border-gray-200 sm:flex sm:justify-between dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex items-center mb-4 sm:mb-0">
+                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ herritarras | length }} erregistro </span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    {{ pagerfanta(herritarras) }}
+                </div>
+            </div>
+        </turbo-frame>
+    {% endblock %}
+{% endblock %}
+
+{% block stream_success %}
+    {{ include('_frameSuccessStreams.html.twig') }}
+    <turbo-stream action="replace" target="herritarra-list">
+        <template>{{ block('herritarra_list_frame') }}</template>
+    </turbo-stream>
+{% endblock %}
+

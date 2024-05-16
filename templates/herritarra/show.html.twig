@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Herritarra{% endblock %}
+
+{% block body %}
+    <h1>Herritarra</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ herritarra.id }}</td>
+            </tr>
+            <tr>
+                <th>Dist</th>
+                <td>{{ herritarra.dist }}</td>
+            </tr>
+            <tr>
+                <th>Secc</th>
+                <td>{{ herritarra.secc }}</td>
+            </tr>
+            <tr>
+                <th>Mesa</th>
+                <td>{{ herritarra.mesa }}</td>
+            </tr>
+            <tr>
+                <th>Nlocal</th>
+                <td>{{ herritarra.nlocal }}</td>
+            </tr>
+            <tr>
+                <th>Nlocalb</th>
+                <td>{{ herritarra.nlocalb }}</td>
+            </tr>
+            <tr>
+                <th>Helbidea</th>
+                <td>{{ herritarra.helbidea }}</td>
+            </tr>
+            <tr>
+                <th>Barrutia</th>
+                <td>{{ herritarra.barrutia }}</td>
+            </tr>
+            <tr>
+                <th>Cargofinal</th>
+                <td>{{ herritarra.cargofinal }}</td>
+            </tr>
+            <tr>
+                <th>Kargua</th>
+                <td>{{ herritarra.kargua }}</td>
+            </tr>
+            <tr>
+                <th>Cargo</th>
+                <td>{{ herritarra.cargo }}</td>
+            </tr>
+            <tr>
+                <th>Ident</th>
+                <td>{{ herritarra.ident }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ herritarra.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Apellido1</th>
+                <td>{{ herritarra.apellido1 }}</td>
+            </tr>
+            <tr>
+                <th>Apellido2</th>
+                <td>{{ herritarra.apellido2 }}</td>
+            </tr>
+            <tr>
+                <th>Eguna</th>
+                <td>{{ herritarra.eguna }}</td>
+            </tr>
+            <tr>
+                <th>Hilabetea</th>
+                <td>{{ herritarra.hilabetea }}</td>
+            </tr>
+            <tr>
+                <th>Urtea</th>
+                <td>{{ herritarra.urtea }}</td>
+            </tr>
+            <tr>
+                <th>Jaioteguna</th>
+                <td>{{ herritarra.jaioteguna ? herritarra.jaioteguna|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_herritarra_index') }}">back to list</a>
+
+    <a href="{{ path('app_herritarra_edit', {'id': herritarra.id}) }}">edit</a>
+
+    {{ include('herritarra/_delete_form.html.twig') }}
+{% endblock %}

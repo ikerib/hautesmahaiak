@@ -1,0 +1,48 @@
+
+{% extends 'modalBase.html.twig' %}
+
+{% block body %}
+    <div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <div class="w-full mb-1">
+            <div class="mb-4">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+                    {% block page_title %} {{ "ADI!!!" | trans }} {% endblock %}
+                </h1>
+            </div>
+            {% block page_header %}
+
+            {% endblock %}
+        </div>
+    </div>
+    {% block herritarra_list_frame %}
+        <turbo-frame id="herritarra-list" data-turbo-action="advance" class="aria-busy:opacity-50">
+            <div class="flex flex-col">
+                <div class="overflow-x-auto">
+                    <div class="inline-block min-w-full align-middle">
+                        <div class="overflow-hidden shadow">
+
+                            <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <span class="sr-only">Danger</span>
+                                <div>
+                                    <span class="font-medium">{{ "Akatsa bat egon da CSV fitxategia inportatzerakoan:" | trans }}</span>
+                                    <ul class="mt-1.5 list-disc list-inside">
+                                        <li>{{ e }}</li>
+                                        <li>{{ "Karaktere berezirenbat dago???" | trans }}</li>
+                                        <li>{{ "Akats gehienak jaiotze data inportatzerakoan egon ohi dira." | trans }}</li>
+                                        <li>&nbsp;</li>
+                                        <li>Akatsa {{ herritarra }} irakurtzean gertatu da, NAN: {{ ident }} zenbakiarekin.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </turbo-frame>
+    {% endblock %}
+{% endblock %}

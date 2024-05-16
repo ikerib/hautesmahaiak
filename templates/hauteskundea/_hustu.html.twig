@@ -1,0 +1,12 @@
+<form method="post" action="{{ path('app_hauteskundea_hustu', {'id': hauteskundea.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ hauteskundea.id) }}">
+    <twig:Button
+            tag="button"
+            variant="danger"
+            type="submit"
+    >
+        <span>Hustu!</span>
+
+    </twig:Button>
+</form>
+
