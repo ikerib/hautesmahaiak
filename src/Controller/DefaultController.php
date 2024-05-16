@@ -64,7 +64,7 @@ class DefaultController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $mahaiak = $herritarraRepository->findBy(['ident' => $mahaia->getIdent(), 'jaioteguna' => $mahaia->getJaioteguna()]);
+            $mahaiak = $herritarraRepository->findBy(['ident' => $mahaia->getIdent(), 'jaioteguna' => $mahaia->getJaioteguna(), 'active' => '1']);
 
             return $this->render('default/index.html.twig', [
                 'form' => $form,

@@ -15,6 +15,8 @@ php bin/console tailwind:build
 
 php bin/console asset-map:compile
 
+php bin/console cache:clear
+
 chown -R www-data:www-data var/
 
 echo ""
