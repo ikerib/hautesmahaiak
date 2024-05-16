@@ -5,12 +5,16 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    final public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,6 +25,9 @@ class User implements UserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
+
+    #[ORM\Column(type: Types::STRING)]
+    private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $izena = null;
@@ -49,9 +56,12 @@ class User implements UserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $mailto = null;
 
-    /*** ERLAZIOAK ****************************************************************************************************/
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
 
-    /*** FUNTZIOAK ****************************************************************************************************/
+        return $this;
+    }
 
     public function __construct()
     {
@@ -247,5 +257,10 @@ class User implements UserInterface
         $this->mailto = $mailto;
 
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 }
