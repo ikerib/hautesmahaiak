@@ -259,11 +259,12 @@ class HerritarraController extends AbstractController
             $entityManager->persist($nextHerritarra);
 
             $entityManager->flush();
+            $this->addFlash('success', 'Datuak ongi gorde dira.');
 
             // Begiratu jakinarazpenentzako helbideak gehituta dituen
             /** @var User $user */
-            $user = $request->getUser();
-            if (('' !== $user->getMailfrom()) && ('' !== $user->getMailto())) {
+            $user = $this->getUser();
+            if ((null !== $user->getMailfrom()) && (null !== $user->getMailto())) {
                 $email = (new TemplatedEmail())
                     ->from($user->getMailfrom())
                     ->to($user->getMailfrom())
@@ -282,6 +283,8 @@ class HerritarraController extends AbstractController
                     throw new \RuntimeException($e->getMessage());
                 }
             }
+
+            $this->addFlash('success', 'Jakinarazpenak bidali dira.');
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
                 $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
