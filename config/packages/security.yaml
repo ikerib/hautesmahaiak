@@ -13,6 +13,7 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
+
     main:
       pattern: ^/
       lazy: true
@@ -21,14 +22,13 @@ security:
         - App\Security\FormLoginAuthenticator
         - App\Security\OauthAuthenticator
       entry_point: App\Security\OauthAuthenticator
-      #            form_login:
-      #                login_path: app_login
-      #                check_path: app_login
-      #                enable_csrf: true
+      form_login:
+        login_path: app_form_login
+        check_path: app_form_login
       logout:
         path: app_logout
-        target: /
-        invalidate_session: true
+        # where to redirect after logout
+        # target: app_any_route
       remember_me:
         secret: '%kernel.secret%' # required
         lifetime: 2419200 # 1 month in seconds
