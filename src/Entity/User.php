@@ -65,7 +65,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->auditlogs = new ArrayCollection();
     }
 
     public function __toString()
@@ -201,36 +200,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAbizena(?string $abizena): static
     {
         $this->abizena = $abizena;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AuditLog>
-     */
-    public function getAuditlogs(): Collection
-    {
-        return $this->auditlogs;
-    }
-
-    public function addAuditlog(AuditLog $auditlog): static
-    {
-        if (!$this->auditlogs->contains($auditlog)) {
-            $this->auditlogs->add($auditlog);
-            $auditlog->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAuditlog(AuditLog $auditlog): static
-    {
-        if ($this->auditlogs->removeElement($auditlog)) {
-            // set the owning side to null (unless already changed)
-            if ($auditlog->getUser() === $this) {
-                $auditlog->setUser(null);
-            }
-        }
 
         return $this;
     }
