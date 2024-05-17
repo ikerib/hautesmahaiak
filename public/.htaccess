@@ -68,3 +68,9 @@ DirectoryIndex index.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+<IfModule mod_setenvif.c>
+    SetEnvIf X-Forwarded-Host (.*) REAL_HOST_HEADER=$1
+    <IfModule mod_headers.c>
+        RequestHeader set Host "%{REAL_HOST_HEADER}e"
+    </IfModule>
+</IfModule>
