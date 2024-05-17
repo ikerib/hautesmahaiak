@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Herritarra;
 use App\Repository\HauteskundeaRepository;
 use App\Repository\HerritarraRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -21,6 +22,22 @@ class DefaultController extends AbstractController
     public function index(): RedirectResponse
     {
         return $this->redirectToRoute('app_kontsulta', ['_locale' => 'eu']);
+    }
+
+    #[Route('/healthcheck', name: 'app_healthcheck')]
+    public function healthcheck(LoggerInterface $logger): Response
+    {
+        \Sentry\configureScope(function (\Sentry\State\Scope $scope): void {
+            $scope->setContext('fun', [
+                'healthcheck' => 'yes',
+            ]);
+        });
+        $logger->error('healthcheck => My custom logged error.');
+        throw new \RuntimeException('healthcheck => Example exception.');
+
+        return new Response(
+            '<html><body>Hello World</body></html>'
+        );
     }
 
     #[Route('/kontsulta/{_locale}/', name: 'app_kontsulta')]
