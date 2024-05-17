@@ -27,16 +27,21 @@
                     Aukeratu autentikazio modu bat
                 </h2>
 
-                <div class="flex justify-center items-center">
-                    <a href="{{ path('app_giltza') }}" type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Hasi saioa GILTZA erabiltzen</a>
-                </div>
-                <div class="flex justify-center items-center">
-                    <a href="{{ path('app_ldap') }}" type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Hasi saioa LDAP erabiltzen</a>
-                </div>
-                <div class="flex justify-center items-center">
-                    <a href="{{ path('app_form_login') }}" type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Hasi saioa Erabiltzaile / Pasahitza erabiltzen</a>
-                </div>
-
+                {% if app.request.server.get('APP_LOGIN_GILTZA')  == '1'%}
+                    <div class="flex justify-center items-center">
+                        <a href="{{ path('app_giltza') }}" type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Hasi saioa GILTZA erabiltzen</a>
+                    </div>
+                {% endif %}
+                {% if app.request.server.get('APP_LOGIN_LDAP')  == '1'%}
+                    <div class="flex justify-center items-center">
+                        <a href="{{ path('app_ldap') }}" type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Hasi saioa LDAP erabiltzen</a>
+                    </div>
+                {% endif %}
+                {% if app.request.server.get('APP_LOGIN_FORM')  == '1'%}
+                    <div class="flex justify-center items-center">
+                        <a href="{{ path('app_form_login') }}" type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Hasi saioa Erabiltzaile / Pasahitza erabiltzen</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
