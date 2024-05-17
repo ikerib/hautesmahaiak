@@ -1466,16 +1466,16 @@
         },
         {
             "name": "gehrisandro/tailwind-merge-php",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gehrisandro/tailwind-merge-php.git",
-                "reference": "781bb3add8a08de048225542ae993c61cfeb34c0"
+                "reference": "56800321286688b585952dbd859d9324b1d2cf31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gehrisandro/tailwind-merge-php/zipball/781bb3add8a08de048225542ae993c61cfeb34c0",
-                "reference": "781bb3add8a08de048225542ae993c61cfeb34c0",
+                "url": "https://api.github.com/repos/gehrisandro/tailwind-merge-php/zipball/56800321286688b585952dbd859d9324b1d2cf31",
+                "reference": "56800321286688b585952dbd859d9324b1d2cf31",
                 "shasum": ""
             },
             "require": {
@@ -1490,7 +1490,7 @@
                 "pestphp/pest-plugin-mock": "^2.0.0",
                 "pestphp/pest-plugin-type-coverage": "^2.8",
                 "phpstan/phpstan": "^1.10.55",
-                "rector/rector": "^0.19",
+                "rector/rector": "^1.0.5",
                 "symfony/var-dumper": "^6.4.2"
             },
             "type": "library",
@@ -1521,7 +1521,7 @@
             ],
             "support": {
                 "issues": "https://github.com/gehrisandro/tailwind-merge-php/issues",
-                "source": "https://github.com/gehrisandro/tailwind-merge-php/tree/v1.1.0"
+                "source": "https://github.com/gehrisandro/tailwind-merge-php/tree/v1.1.1"
             },
             "funding": [
                 {
@@ -1529,7 +1529,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-10T20:54:41+00:00"
+            "time": "2024-05-16T19:48:35+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -8965,16 +8965,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.10.2",
+            "version": "v3.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "7aaed0b8311a557cc8c4047a71fd03153a00e755"
+                "reference": "67f29781ffafa520b0bbfbd8384674b42db04572"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7aaed0b8311a557cc8c4047a71fd03153a00e755",
-                "reference": "7aaed0b8311a557cc8c4047a71fd03153a00e755",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/67f29781ffafa520b0bbfbd8384674b42db04572",
+                "reference": "67f29781ffafa520b0bbfbd8384674b42db04572",
                 "shasum": ""
             },
             "require": {
@@ -9028,7 +9028,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.10.2"
+                "source": "https://github.com/twigphp/Twig/tree/v3.10.3"
             },
             "funding": [
                 {
@@ -9040,7 +9040,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-14T06:04:16+00:00"
+            "time": "2024-05-16T10:04:27+00:00"
         }
     ],
     "packages-dev": [
@@ -9355,16 +9355,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.57.0",
+            "version": "v3.57.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "0d4fcaea3e1d1304f75b9ff58474f60484e43498"
+                "reference": "3f7efe667a8c9818aacceee478add7c0fc24cb21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/0d4fcaea3e1d1304f75b9ff58474f60484e43498",
-                "reference": "0d4fcaea3e1d1304f75b9ff58474f60484e43498",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/3f7efe667a8c9818aacceee478add7c0fc24cb21",
+                "reference": "3f7efe667a8c9818aacceee478add7c0fc24cb21",
                 "shasum": ""
             },
             "require": {
@@ -9443,7 +9443,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.57.0"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.57.1"
             },
             "funding": [
                 {
@@ -9451,7 +9451,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-15T14:45:33+00:00"
+            "time": "2024-05-15T22:01:07+00:00"
         },
         {
             "name": "nikic/php-parser",
