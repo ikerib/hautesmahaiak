@@ -19,6 +19,7 @@
         "pagerfanta/twig": "*",
         "phpoffice/phpspreadsheet": "^2.0",
         "sentry/sentry-symfony": "^5.0",
+        "symfony/apache-pack": "^1.0",
         "symfony/asset": "6.4.*",
         "symfony/asset-mapper": "6.4.*",
         "symfony/console": "6.4.*",
