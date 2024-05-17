@@ -1,19 +1,19 @@
-when@prod:
-    sentry:
-        dsn: '%env(SENTRY_DSN)%'
-        register_error_listener: false
-        options:
-            traces_sample_rate: 0.1
-            ignore_exceptions:
-                - 'Symfony\Component\ErrorHandler\Error\FatalError'
-                - 'Symfony\Component\Debug\Exception\FatalErrorException'
-
-
-    monolog:
-      handlers:
-        sentry:
-          type: sentry
-          hub_id: Sentry\State\HubInterface
+#when@prod:
+#    sentry:
+#        dsn: '%env(SENTRY_DSN)%'
+#        register_error_listener: false
+#        options:
+#            traces_sample_rate: 0.1
+#            ignore_exceptions:
+#                - 'Symfony\Component\ErrorHandler\Error\FatalError'
+#                - 'Symfony\Component\Debug\Exception\FatalErrorException'
+#
+#
+#    monolog:
+#      handlers:
+#        sentry:
+#          type: sentry
+#          hub_id: Sentry\State\HubInterface
 
 #        If you are using Monolog, you also need this additional configuration to log the errors correctly:
 #        https://docs.sentry.io/platforms/php/guides/symfony/#monolog-integration
