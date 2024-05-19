@@ -21,8 +21,9 @@ security:
       custom_authenticator:
         - App\Security\FormLoginAuthenticator
         - App\Security\OauthAuthenticator
-#      entry_point: App\Security\OauthAuthenticator
-      entry_point: form_login
+      entry_point: App\Security\OauthAuthenticator
+#      entry_point: form_login
+#      entry_point: App\Security\FormLoginAuthenticator
       form_login:
         login_path: app_form_login
         check_path: app_form_login

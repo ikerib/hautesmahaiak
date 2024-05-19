@@ -12,19 +12,18 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-//    #[Route('/login', name: 'app_login')]
-//    public function applogin(Request $request): RedirectResponse
-//    {
-//        $locale = $request->query->get('_locale');
-//        if (!$locale) {
-//            $locale = 'eu';
-//        }
-//
-//        return $this->redirectToRoute('app_login_locale', ['_locale' => $locale]);
-//    }
-
-//    #[Route('/choose/{_locale}', name: 'app_login_locale')]
     #[Route('/login', name: 'app_login')]
+    public function applogin(Request $request): RedirectResponse
+    {
+        $locale = $request->query->get('_locale');
+        if (!$locale) {
+            $locale = 'eu';
+        }
+
+        return $this->redirectToRoute('app_login_locale', ['_locale' => $locale]);
+    }
+
+    #[Route('/choose/{_locale}', name: 'app_login_locale')]
     public function home(): Response
     {
         return $this->render('security/choose_login.html.twig', []);
