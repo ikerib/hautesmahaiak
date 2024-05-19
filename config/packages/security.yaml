@@ -21,7 +21,8 @@ security:
       custom_authenticator:
         - App\Security\FormLoginAuthenticator
         - App\Security\OauthAuthenticator
-      entry_point: App\Security\OauthAuthenticator
+#      entry_point: App\Security\OauthAuthenticator
+      entry_point: form_login
       form_login:
         login_path: app_form_login
         check_path: app_form_login
@@ -50,7 +51,7 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/kudeatu/, roles: ROLE_ADMIN }
+    - { path: ^/kudeatu, roles: ROLE_ADMIN }
 
 when@test:
   security:
