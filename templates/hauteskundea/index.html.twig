@@ -116,12 +116,12 @@
                                         class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                         <a class="fw-semibold mb-0" href="{{ path('app_hauteskundea_index', {
                                             ...app.request.query.all(),
-                                            sort: 'izena',
-                                            sortDirection: sort == 'izena' and sortDirection == 'asc' ? 'desc' : 'asc',
+                                            sort: 'izena_eu',
+                                            sortDirection: sort == 'izena_eu' and sortDirection == 'asc' ? 'desc' : 'asc',
                                         }) }}"
                                            data-turbo-frame="hauteskundea-list"
                                         >
-                                            {{ "Izena" | trans }} {{ _self.sortArrow('izena', sort, sortDirection) }}
+                                            {{ "Izena" | trans }} {{ _self.sortArrow('izena_eu', sort, sortDirection) }}
                                         </a>
                                     </th>
                                     <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">

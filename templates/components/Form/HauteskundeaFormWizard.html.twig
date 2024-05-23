@@ -1,0 +1,99 @@
+<div{{ attributes }}>
+    {{ form_start(form) }}
+
+    <div class="grid grid-cols-2 gap-4">
+        {{ form_row(form.izenaEu) }}
+        {{ form_row(form.izenaEs) }}
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        {{ form_row(form.active) }}
+        <div class="relative max-w-sm">
+            <div class="ml-1 mb-2.5 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none topMinus15 mr-2">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                </svg>
+            </div>
+            {{ form_row(form.data) }}
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mt-4">
+        <div>
+            {{ form_label(form.oharrakEu) }}
+            {{ form_row(form.oharrakEu) }}
+            <trix-editor input="{{ form.oharrakEu.vars.id }}"
+                         class="trix-editor trix-content min-h-40 mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500
+                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></trix-editor>
+        </div>
+        <div>
+            {{ form_label(form.oharrakEs) }}
+            {{ form_row(form.oharrakEs) }}
+            <trix-editor input="{{ form.oharrakEs.vars.id }}"
+                         class="trix-editor trix-content min-h-40 mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500
+                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></trix-editor>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mt-4">
+        <div>
+            {{ form_label(form.mezuaHautatuaEu) }}
+            {{ form_help(form.mezuaHautatuaEu) }}
+            {{ form_row(form.mezuaHautatuaEu) }}
+            <trix-editor input="{{ form.mezuaHautatuaEu.vars.id }}"
+                         class="trix-editor trix-content min-h-40 mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500
+                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></trix-editor>
+        </div>
+        <div>
+            {{ form_label(form.mezuaHautatuaEs) }}
+            {{ form_help(form.mezuaHautatuaEs) }}
+            {{ form_row(form.mezuaHautatuaEs) }}
+            <trix-editor input="{{ form.mezuaHautatuaEs.vars.id }}"
+                         class="trix-editor trix-content min-h-40 mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500
+                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></trix-editor>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mt-4">
+        <div>
+            {{ form_label(form.mezuaEzHautatuaEu) }}
+            {{ form_help(form.mezuaEzHautatuaEu) }}
+            {{ form_row(form.mezuaEzHautatuaEu) }}
+            <trix-editor input="{{ form.mezuaEzHautatuaEu.vars.id }}"
+                         class="trix-editor trix-content min-h-40 mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500
+                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></trix-editor>
+        </div>
+        <div>
+            {{ form_label(form.mezuaEzHautatuaEs) }}
+            {{ form_help(form.mezuaEzHautatuaEs) }}
+            {{ form_row(form.mezuaEzHautatuaEs) }}
+            <trix-editor input="{{ form.mezuaEzHautatuaEs.vars.id }}"
+                         class="trix-editor trix-content min-h-40 mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500
+                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></trix-editor>
+        </div>
+    </div>
+
+    <twig:Button
+            formnovalidate
+                 type="submit"
+            variant="default"
+            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 1024 1024"><path fill="currentColor" d="M893.3 293.3L730.7 130.7c-7.5-7.5-16.7-13-26.7-16V112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V338.5c0-17-6.7-33.2-18.7-45.2M384 184h256v104H384zm456 656H184V184h136v136c0 17.7 14.3 32 32 32h320c17.7 0 32-14.3 32-32V205.8l136 136zM512 442c-79.5 0-144 64.5-144 144s64.5 144 144 144s144-64.5 144-144s-64.5-144-144-144m0 224c-44.2 0-80-35.8-80-80s35.8-80 80-80s80 35.8 80 80s-35.8 80-80 80"/></svg>
+        {{ button_label|default('Gorde') }}
+    </twig:Button>
+    {{ form_end(form) }}
+
+
+</div>
+
+
+
+
+

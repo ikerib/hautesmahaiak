@@ -16,7 +16,7 @@ class HauteskundeaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('izena', TextType::class, [
+            ->add('izena_eu', TextType::class, [
                 'label' => 'Hauteskundea',
             ])
             ->add('active', CheckboxType::class, [
@@ -37,7 +37,7 @@ class HauteskundeaType extends AbstractType
                 'label_attr' => [
                 ],
             ])
-            ->add('oharrak', HiddenType::class, [
+            ->add('oharrak_eu', HiddenType::class, [
                 'label' => 'Deskribapena:',
                 'help' => 'Hemen eskaintzari buruzko informazio areagotua zehaztu daiteke',
                 'help_attr' => [

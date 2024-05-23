@@ -24,7 +24,7 @@ class HauteskundeaRepository extends ServiceEntityRepository
         if ($query) {
             $qb->andWhere(
                 $qb->expr()->orX(
-                    $qb->expr()->like('a.izena', ':query'),
+                    $qb->expr()->like('a.izena_eu', ':query'),
                     $qb->expr()->like('a.data', ':query')
                 )
             )->setParameter('query', '%'.$query.'%');

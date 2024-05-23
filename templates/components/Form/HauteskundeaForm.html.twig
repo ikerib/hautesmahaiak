@@ -1,7 +1,8 @@
 <div{{ attributes }}>
 
     {{ form_start(form) }}
-    {{ form_row(form.izena) }}
+    {{ form_row(form.izena_eu) }}
+    {{ form_row(form.izena_es) }}
     {{ form_row(form.active) }}
     <div class="relative max-w-sm">
         <div class="ml-1 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none topMinus15 mr-2">
@@ -12,9 +13,9 @@
         {{ form_row(form.data) }}
     </div>
 
-    {{ form_label(form.oharrak) }}
-    {{ form_row(form.oharrak) }}
-    <trix-editor input="{{ form.oharrak.vars.id }}"
+    {{ form_label(form.oharrak_eu) }}
+    {{ form_row(form.oharrak_eu) }}
+    <trix-editor input="{{ form.oharrak_eu.vars.id }}"
                  class="trix-editor trix-content min-h-40 mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500
                 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     ></trix-editor>
