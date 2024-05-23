@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Hauteskunde berria" | trans }}{% endblock %}
+
+{% block body %}
+
+    {{ include('hauteskundea/_form_wizard2.html.twig') }}
+
+{% endblock %}
+
+
+{% block stream_success %}
+
+    <turbo-stream action="replace" target="wizard-form">
+        <template>
+            {{ include('hauteskundea/_form_wizard2.html.twig') }}
+        </template>
+    </turbo-stream>
+
+{% endblock %}

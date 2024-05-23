@@ -1,15 +1,10 @@
 import './bootstrap.js';
-import * as Turbo from '@hotwired/turbo';
-// any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
 
-// start the Stimulus application
-
-// enable the interactive UI components from Flowbite
 import { initFlowbite } from 'flowbite';
 import './lib/darkmode.js'
 // import './lib/datepicker.js'
 
+import * as Turbo from '@hotwired/turbo';
 import { shouldPerformTransition, performTransition } from 'turbo-view-transitions';
 import Trix from "trix"
 

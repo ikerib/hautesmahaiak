@@ -12,6 +12,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            content: {
+                'link': 'url("/icons/link.svg")',
+            },
             animation: {
                 'fade-in': 'fadeIn .5s ease-out;',
                 wiggle: 'wiggle 1s ease-in-out infinite',

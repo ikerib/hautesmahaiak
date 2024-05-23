@@ -3,6 +3,7 @@
 namespace App\Twig\Components\Form;
 
 use App\Entity\Hauteskundea;
+use App\Form\HauteskundeaWizard1Type;
 use App\Form\HauteskundeaWizardType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -24,7 +25,7 @@ final class HauteskundeaFormWizard extends AbstractController
     {
         $hauteskundea = $this->initialFormData ?? new Hauteskundea();
 
-        return $this->createForm(HauteskundeaWizardType::class, $hauteskundea, [
+        return $this->createForm(HauteskundeaWizard1Type::class, $hauteskundea, [
             'action' => $hauteskundea->getId() ? $this->generateUrl('app_hauteskundea_edit', ['id' => $hauteskundea->getId()]) : $this->generateUrl('app_hauteskundea_wizard'),
         ]);
     }

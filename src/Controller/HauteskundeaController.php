@@ -3,7 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Hauteskundea;
-use App\Form\HauteskundeaWizardType;
+use App\Form\HauteskundeaType;
+use App\Form\HauteskundeaWizard1Type;
+use App\Form\HauteskundeaWizard2Type;
+use App\Form\HauteskundeaWizard3Type;
+use App\Form\HauteskundeaWizard4Type;
+use App\Form\HauteskundeaWizard5Type;
 use App\Repository\HauteskundeaRepository;
 use App\Utils\CsvHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,47 +48,6 @@ class HauteskundeaController extends AbstractController
     }
 
     #[Route('/wizard', name: 'app_hauteskundea_wizard', methods: ['GET', 'POST'])]
-    public function wizard(Request $request, EntityManagerInterface $entityManager, CsvHelper $csvHelper): Response
-    {
-        $hauteskundea = new Hauteskundea();
-        $form = $this->createHauteskundeaForm($hauteskundea);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($hauteskundea);
-            $entityManager->flush();
-            $this->addFlash('success', 'Datuak ongi gorde dira.');
-
-            $erroldaFile = $form['errolda']->getData();
-            $zozketaFile = $form['zozketa']->getData();
-
-            $responseErrolda = $csvHelper->importErrolda($erroldaFile);
-            if ('error' === $responseErrolda['result']) {
-                return $this->render('hauteskundea/csverror.html.twig', $responseErrolda);
-            }
-            $responseZozketa = $csvHelper->importZozketa($zozketaFile);
-
-            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
-                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
-                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-                //$form = $this->createHauteskundeaForm();
-
-                return $this->renderBlock('hauteskundea/wizard.html.twig', 'stream_success', [
-                    'form' => $form,
-                    'hauteskundea' => $hauteskundea,
-                ]);
-            }
-
-            return $this->redirectToRoute('app_hauteskundea_wizard', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('hauteskundea/wizard.html.twig', [
-            'hauteskundea' => $hauteskundea,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/wizard1', name: 'app_hauteskundea_wizard1', methods: ['GET', 'POST'])]
     public function wizard1(Request $request, EntityManagerInterface $entityManager, CsvHelper $csvHelper): Response
     {
         $hauteskundea = new Hauteskundea();
@@ -95,6 +59,127 @@ class HauteskundeaController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Datuak ongi gorde dira.');
 
+            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
+                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
+                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+            }
+
+            return $this->redirectToRoute('app_hauteskundea_wizard2', ['id' => $hauteskundea->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('hauteskundea/wizard1.html.twig', [
+            'hauteskundea' => $hauteskundea,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/wizard2', name: 'app_hauteskundea_wizard2', methods: ['GET', 'POST'])]
+    public function wizard2(Request $request, Hauteskundea $hauteskundea, EntityManagerInterface $entityManager, CsvHelper $csvHelper): Response
+    {
+        $form = $this->createForm(HauteskundeaWizard2Type::class, $hauteskundea, [
+            'action' => $this->generateUrl('app_hauteskundea_wizard2', ['id' => $hauteskundea->getId()]),
+            'method' => 'POST',
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($hauteskundea);
+            $entityManager->flush();
+            $this->addFlash('success', 'Datuak ongi gorde dira.');
+
+            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
+                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
+                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+            }
+
+            return $this->redirectToRoute('app_hauteskundea_wizard3', ['id' => $hauteskundea->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('hauteskundea/wizard2.html.twig', [
+            'hauteskundea' => $hauteskundea,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/wizard3', name: 'app_hauteskundea_wizard3', methods: ['GET', 'POST'])]
+    public function wizard3(Request $request, Hauteskundea $hauteskundea, EntityManagerInterface $entityManager, CsvHelper $csvHelper): Response
+    {
+        $form = $this->createForm(HauteskundeaWizard3Type::class, $hauteskundea, [
+            'action' => $this->generateUrl('app_hauteskundea_wizard3', ['id' => $hauteskundea->getId()]),
+            'method' => 'POST',
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($hauteskundea);
+            $entityManager->flush();
+            $this->addFlash('success', 'Datuak ongi gorde dira.');
+
+            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
+                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
+                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+            }
+
+            return $this->redirectToRoute('app_hauteskundea_wizard4', ['id' => $hauteskundea->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('hauteskundea/wizard3.html.twig', [
+            'hauteskundea' => $hauteskundea,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/wizard4', name: 'app_hauteskundea_wizard4', methods: ['GET', 'POST'])]
+    public function wizard4(Request $request, Hauteskundea $hauteskundea, EntityManagerInterface $entityManager, CsvHelper $csvHelper): Response
+    {
+        $form = $this->createForm(HauteskundeaWizard4Type::class, $hauteskundea, [
+            'action' => $this->generateUrl('app_hauteskundea_wizard4', ['id' => $hauteskundea->getId()]),
+            'method' => 'POST',
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($hauteskundea);
+            $entityManager->flush();
+            $this->addFlash('success', 'Datuak ongi gorde dira.');
+
+            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
+                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
+                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+            }
+
+            return $this->redirectToRoute('app_hauteskundea_wizard5', ['id' => $hauteskundea->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('hauteskundea/wizard4.html.twig', [
+            'hauteskundea' => $hauteskundea,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/wizard5', name: 'app_hauteskundea_wizard5', methods: ['GET', 'POST'])]
+    public function wizard5(Request $request, Hauteskundea $hauteskundea, EntityManagerInterface $entityManager, CsvHelper $csvHelper): Response
+    {
+        $form = $this->createForm(HauteskundeaWizard5Type::class, $hauteskundea, [
+            'action' => $this->generateUrl('app_hauteskundea_wizard5', ['id' => $hauteskundea->getId()]),
+            'method' => 'POST',
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($hauteskundea);
+            $entityManager->flush();
+            $this->addFlash('success', 'Datuak ongi gorde dira.');
+
+            $erroldaFile = $form['errolda']->getData();
+            $zozketaFile = $form['zozketa']->getData();
+
+            $responseErrolda = $csvHelper->importErrolda($erroldaFile);
+            if ('error' === $responseErrolda['result']) {
+                return $this->render('hauteskundea/csverror.html.twig', $responseErrolda);
+            }
+            $responseZozketa = $csvHelper->importZozketa($zozketaFile);
+
             $erroldaFile = $form['errolda']->getData();
             $zozketaFile = $form['zozketa']->getData();
 
@@ -108,16 +193,16 @@ class HauteskundeaController extends AbstractController
                 // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
                 $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
 
-                return $this->renderBlock('hauteskundea/wizard1.html.twig', 'stream_success', [
+                return $this->renderBlock('hauteskundea/wizard4.html.twig', 'stream_success', [
                     'form' => $form,
                     'hauteskundea' => $hauteskundea,
                 ]);
             }
 
-            return $this->redirectToRoute('app_hauteskundea_wizard', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_hauteskundea_wizard4', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('hauteskundea/wizard1.html.twig', [
+        return $this->render('hauteskundea/wizard5.html.twig', [
             'hauteskundea' => $hauteskundea,
             'form' => $form,
         ]);
@@ -127,7 +212,7 @@ class HauteskundeaController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $hauteskundea = new Hauteskundea();
-        $form = $this->createHauteskundeaForm($hauteskundea);
+        $form = $this->createForm(HauteskundeaType::class, $hauteskundea);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -223,7 +308,7 @@ class HauteskundeaController extends AbstractController
     {
         $hauteskundea = $hauteskundea ?? new Hauteskundea();
 
-        return $this->createForm(HauteskundeaWizardType::class, $hauteskundea, [
+        return $this->createForm(HauteskundeaWizard1Type::class, $hauteskundea, [
             'action' => $hauteskundea->getId() ? $this->generateUrl('app_hauteskundea_edit', ['id' => $hauteskundea->getId()]) : $this->generateUrl('app_hauteskundea_wizard'),
         ]);
     }
