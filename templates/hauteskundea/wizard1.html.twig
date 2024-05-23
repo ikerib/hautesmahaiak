@@ -34,62 +34,12 @@
 
 {% block body %}
 
-    <div class="w-full h-0 mx-auto bg-white dark:bg-gray-900 iframe-code">
-        <div class="mt-4 relative w-full max-w-screen-2xl mx-auto overflow-y-auto bg-gray-50 dark:bg-gray-900">
-
-            <ol class="items-center w-full sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                <li class="ml-8 flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
-                    <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
-                        1
-                    </span>
-                    <span>
-                        <h3 class="font-medium leading-tight">{{ "Izaera" | trans }}</h3>
-                        <p class="text-sm">{{ "Oinarrizko datuak" | trans }}</p>
-                    </span>
-                </li>
-                <li class="ml-8 flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                    <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                        2
-                    </span>
-                    <span>
-                        <h3 class="font-medium leading-tight">{{ "Oharrak" }}</h3>
-                        <p class="text-sm">Informazio areagotua</p>
-                    </span>
-                </li>
-                <li class="ml-8 flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                    <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                        3
-                    </span>
-                    <span>
-                        <h3 class="font-medium leading-tight">{{ "Mezua" | trans }}</h3>
-                        <p class="text-sm">{{ "Hautatua bada" | trans }}</p>
-                    </span>
-                </li>
-                <li class="ml-8 flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                    <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                        4
-                    </span>
-                    <span>
-                        <h3 class="font-medium leading-tight">{{ "Mezua" | trans }}</h3>
-                        <p class="text-sm">{{ "Hautatua EZ bada" | trans }}</p>
-                    </span>
-                </li>
-                <li class="ml-8 flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                    <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                        5
-                    </span>
-                    <span>
-                        <h3 class="font-medium leading-tight">{{ "Fitxategiak" | trans }}</h3>
-                        <p class="text-sm">{{ "Errolda / Zozketa" | trans }}</p>
-                    </span>
-                </li>
-            </ol>
-
-
-        </div>
-    </div>
     <div class="mt-4 relative w-full max-w-screen-2xl mx-auto h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
-        {{ include('hauteskundea/_form_wizard.html.twig') }}
+        {% include 'hauteskundea/_steeper.html.twig' with {'steep':1} %}
+        <hr/>
+        <div class="mt-8">
+            {{ include('hauteskundea/_form_wizard.html.twig') }}
+        </div>
     </div>
 
 {% endblock %}
