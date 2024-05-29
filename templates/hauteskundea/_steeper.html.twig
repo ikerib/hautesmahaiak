@@ -1,11 +1,14 @@
 <ol class="flex items-center justify-center w-full space-x-8 rtl:space-x-reverse bg-gray-100">
+
     <li class=" flex items-center {% if steep > 0 %}text-blue-600 dark:text-blue-500 {% endif %} space-x-2.5 rtl:space-x-reverse">
         <span class="flex items-center justify-center w-8 h-8 border {% if steep > 0 %} border-blue-600 dark:border-blue-500 {% endif %}rounded-full shrink-0">
             1
         </span>
         <span>
-            <h3 class="font-medium leading-tight">{{ "Izaera" | trans }}</h3>
-            <p class="text-sm">{{ "Oinarrizko datuak" | trans }}</p>
+            {% if hauteskundea.id is not null %}<a href="{{ path('app_hauteskundea_wizard', {'id': hauteskundea.id}) }}">{% endif %}
+                <h3 class="font-medium leading-tight">{{ "Izaera" | trans }}</h3>
+                <p class="text-sm">{{ "Oinarrizko datuak" | trans }}</p>
+            {% if hauteskundea.id is not null %}</a>{% endif %}
         </span>
     </li>
     <li class=" flex items-center {% if steep > 1 %}text-blue-600 dark:text-blue-500 {% endif %} space-x-2.5 rtl:space-x-reverse">
@@ -13,8 +16,10 @@
             2
         </span>
         <span>
-            <h3 class="font-medium leading-tight">{{ "Oharrak" }}</h3>
-            <p class="text-sm">Informazio areagotua</p>
+            {% if hauteskundea.id is not null %}<a href="{{ path('app_hauteskundea_wizard2', {'id': hauteskundea.id}) }}">{% endif %}
+                <h3 class="font-medium leading-tight">{{ "Oharrak" }}</h3>
+                <p class="text-sm">Informazio areagotua</p>
+            {% if hauteskundea.id is not null %}</a>{% endif %}
         </span>
     </li>
     <li class=" flex items-center {% if steep > 2 %}text-blue-600 dark:text-blue-500 {% endif %} space-x-2.5 rtl:space-x-reverse">
@@ -22,8 +27,10 @@
             3
         </span>
         <span>
-            <h3 class="font-medium leading-tight">{{ "Mezua" | trans }}</h3>
-            <p class="text-sm">{{ "Hautatua bada" | trans }}</p>
+            {% if hauteskundea.id is not null %}<a href="{{ path('app_hauteskundea_wizard3', {'id': hauteskundea.id}) }}">{% endif %}
+                <h3 class="font-medium leading-tight">{{ "Mezua" | trans }}</h3>
+                <p class="text-sm">{{ "Hautatua bada" | trans }}</p>
+            {% if hauteskundea.id is not null %}</a>{% endif %}
         </span>
     </li>
     <li class=" flex items-center {% if steep > 3 %}text-blue-600 dark:text-blue-500 {% endif %} space-x-2.5 rtl:space-x-reverse">
@@ -31,8 +38,10 @@
             4
         </span>
         <span>
-            <h3 class="font-medium leading-tight">{{ "Mezua" | trans }}</h3>
-            <p class="text-sm">{{ "Hautatua EZ bada" | trans }}</p>
+            {% if hauteskundea.id is not null %}<a href="{{ path('app_hauteskundea_wizard4', {'id': hauteskundea.id}) }}">{% endif %}
+                <h3 class="font-medium leading-tight">{{ "Mezua" | trans }}</h3>
+                <p class="text-sm">{{ "Hautatua EZ bada" | trans }}</p>
+            {% if hauteskundea.id is not null %}</a>{% endif %}
         </span>
     </li>
     <li class=" flex items-center {% if steep > 4 %}text-blue-600 dark:text-blue-500 {% endif %} space-x-2.5 rtl:space-x-reverse">
@@ -40,8 +49,11 @@
             5
         </span>
         <span>
-            <h3 class="font-medium leading-tight">{{ "Fitxategiak" | trans }}</h3>
-            <p class="text-sm">{{ "Errolda / Zozketa" | trans }}</p>
+            {% if hauteskundea.id is not null %}<a href="{{ path('app_hauteskundea_wizard5', {'id': hauteskundea.id}) }}">{% endif %}
+                <h3 class="font-medium leading-tight">{{ "Fitxategiak" | trans }}</h3>
+                <p class="text-sm">{{ "Errolda / Zozketa" | trans }}</p>
+            {% if hauteskundea.id is not null %}</a>{% endif %}
         </span>
     </li>
+
 </ol>

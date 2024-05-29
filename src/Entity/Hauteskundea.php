@@ -65,6 +65,7 @@ class Hauteskundea
 
     public function __construct()
     {
+        $this->active = 1;
         $this->herritarrak = new ArrayCollection();
     }
 

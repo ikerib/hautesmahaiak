@@ -39,7 +39,11 @@ class HauteskundeaWizard1Type extends AbstractType
                 'help' => 'Markatu hau hauteskundeko kontsulta eremua aktibatu / desaktibatzeko',
             ])
             ->add('data', DateType::class, options: [
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 'label' => 'Data',
+                'required' => true,
                 'widget' => 'single_text',
                 'html5' => false,
                 'help' => 'Noiz izango dira hauteskundeak.',

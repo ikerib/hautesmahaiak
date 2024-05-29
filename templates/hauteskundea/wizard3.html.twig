@@ -3,7 +3,7 @@
 {% block title %}{{ "Hauteskunde berria" | trans }}{% endblock %}
 
 {% block body %}
-
+<turbo-frame id="wizard-form" class="aria-busy:opacity-50">
     <div class="mt-4 relative w-full max-w-screen-2xl mx-auto h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
 
         {% include 'hauteskundea/_steeper.html.twig' with {'steep':3 } %}
@@ -13,6 +13,7 @@
             {{ include('hauteskundea/_form_wizard3.html.twig') }}
         </div>
     </div>
+</turbo-frame>
 {% endblock %}
 
 

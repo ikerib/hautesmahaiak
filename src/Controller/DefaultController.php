@@ -90,9 +90,19 @@ class DefaultController extends AbstractController
             ]);
         }
 
+        try {
+            $hauteskundea = $hauteskundeaRepository->getActive();
+        } catch (\Exception $e) {
+            return $this->render('default/akatsa.html.twig', [
+                'akatsa' => $e->getMessage(),
+            ]);
+        }
+
+
+
         return $this->render('default/index.html.twig', [
             'form' => $form,
-            'hauteskundea' => $hauteskundeaRepository->getActive(),
+            'hauteskundea' => $hauteskundea,
         ]);
     }
 }

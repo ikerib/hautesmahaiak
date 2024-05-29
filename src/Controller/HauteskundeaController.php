@@ -11,6 +11,7 @@ use App\Form\HauteskundeaWizard4Type;
 use App\Form\HauteskundeaWizard5Type;
 use App\Repository\HauteskundeaRepository;
 use App\Utils\CsvHelper;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -48,9 +49,15 @@ class HauteskundeaController extends AbstractController
     }
 
     #[Route('/wizard', name: 'app_hauteskundea_wizard', methods: ['GET', 'POST'])]
-    public function wizard1(Request $request, EntityManagerInterface $entityManager, CsvHelper $csvHelper): Response
+    public function wizard1(Request $request, EntityManagerInterface $entityManager, #[MapQueryParameter] ?int $id = null): Response
     {
-        $hauteskundea = new Hauteskundea();
+        $hauteskundea = null;
+        if (null !== $id) {
+            $hauteskundea = $entityManager->getRepository(Hauteskundea::class)->find($id);
+        } else {
+            $hauteskundea = new Hauteskundea();
+        }
+
         $form = $this->createHauteskundeaForm($hauteskundea);
         $form->handleRequest($request);
 
@@ -178,28 +185,27 @@ class HauteskundeaController extends AbstractController
             if ('error' === $responseErrolda['result']) {
                 return $this->render('hauteskundea/csverror.html.twig', $responseErrolda);
             }
-            $responseZozketa = $csvHelper->importZozketa($zozketaFile);
-
-            $erroldaFile = $form['errolda']->getData();
-            $zozketaFile = $form['zozketa']->getData();
-
-            $responseErrolda = $csvHelper->importErrolda($erroldaFile);
-            if ('error' === $responseErrolda['result']) {
-                return $this->render('hauteskundea/csverror.html.twig', $responseErrolda);
+            $responseZozketa = $csvHelper->importZozketa($zozketaFile, $hauteskundea->getId());
+            if ('error' === $responseZozketa['result']) {
+                return $this->render('hauteskundea/csverror.html.twig', $responseZozketa);
             }
-            $responseZozketa = $csvHelper->importZozketa($zozketaFile);
 
-            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
-                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
-                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+            $responseMerge = $csvHelper->mergeCsv($hauteskundea->getId());
+            if ('error' === $responseMerge['result']) {
+                return $this->render('hauteskundea/csverror.html.twig', $responseMerge);
+            }
 
-                return $this->renderBlock('hauteskundea/wizard4.html.twig', 'stream_success', [
-                    'form' => $form,
-                    'hauteskundea' => $hauteskundea,
+            try {
+                $csvHelper->hustuErrolda();
+            } catch (Exception $e) {
+                return $this->render('hauteskundea/csverror.html.twig', [
+                    'exception' => $e->getMessage(),
+                    'ident' => '',
+                    'herritarra' => '',
                 ]);
             }
 
-            return $this->redirectToRoute('app_hauteskundea_wizard4', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_hauteskundea_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('hauteskundea/wizard5.html.twig', [
@@ -255,17 +261,16 @@ class HauteskundeaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($hauteskundea);
             $entityManager->flush();
             $this->addFlash('success', 'Datuak ongi gorde dira.');
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
                 // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
                 $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-
-                return $this->renderBlock('hauteskundea/edit.html.twig', 'stream_success', [
-                    'hauteskundea' => $hauteskundea,
-                ]);
             }
+
+            return $this->redirectToRoute('app_hauteskundea_wizard2', ['id' => $hauteskundea->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('hauteskundea/edit.html.twig', [

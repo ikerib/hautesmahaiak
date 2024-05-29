@@ -16,6 +16,9 @@
             <div class="mb-10">
                 <h1 class="text-3xl font-bold dark:text-white">{{ hauteskundea }}</h1>
             </div>
+        <div class="mb-10">
+            {{ hauteskundea.oharrakEu | raw }}
+        </div>
             <div class="">
                 {{ form_start(form) }}
                 <div class="relative max-w-sm">
@@ -38,22 +41,10 @@
         {% if mahaiak is defined %}
 
             {% if mahaiak is empty %}
-                <div class="">
-                    <div class="">
-                        <h3 class="text-3xl font-bold dark:text-white">{{ "Ez zara hautatua izan." | trans}}</h3>
-                        <p>&nbsp;</p>
-                        {% if app.request.locale == "eu" %}
-                            <p>Zure izendapena ez agertzeak esan nahi du ez zaituztela izendatu ez titular gisa, ezta 1. edo 2. ordezko gisa ere.</p>
-                            <p>Hala ere, aipatutako bi ordezkoez gain, zozketak beste 11 ordezko gordetzen ditu kargu bakoitzerako. Hauteskunde Batzordeak izendatutako pertsonen desenkusak onartzen dituenean, ordezkoen txandarekin jarraitu behar izaten da.</p>
-                            <p>Hori dela eta, baliteke hasiera batean kontsulta honetan zure izena ez agertzea, baina jakin ezazu egoera hori aldatu egin daitekeela hauteskundeak egin bitartean.</p>
-                        {% else %}
+                <div class="mt-10">
 
-                            <p>Nota importante: el hecho de que no aparezcas en esta consulta significa que no has sido designado/a ni como titular ni como primer o segundo/a suplente.</p>
-                            <p>No obstante, además de los dos suplentes citados, el sorteo almacena otros once suplentes para cada cargo. Si se diera el caso de que la Junta Electoral aceptara excusas de las personas nombradas en primera instancia, podría ser necesario correr el turno a los/las siguientes suplentes.</p>
-                            <p>Por ello, existe la posibilidad de que en esta consulta tu nombre no aparezca, pero esta situación puede cambiar durante todo el periodo hasta la celebración de las elecciones.</p>
+                    {{ hauteskundea.mezuaEzHautatuaEu |raw }}
 
-                        {% endif %}
-                    </div>
                 </div>
             {% else %}
                 <div class="flex flex-col mt-6">

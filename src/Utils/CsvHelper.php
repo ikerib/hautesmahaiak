@@ -3,8 +3,11 @@
 namespace App\Utils;
 
 use App\Entity\Errolda;
+use App\Entity\Hauteskundea;
 use App\Entity\Herritarra;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 
 final class CsvHelper
 {
@@ -15,12 +18,12 @@ final class CsvHelper
         $this->entityManager = $entityManager;
     }
 
-    public function importErrolda($csv): array
+    public function importErrolda($csvErrolda): array
     {
-        $csv->move('/tmp', 'import.csv');
+        $csvErrolda->move('/tmp', 'errolda.csv');
         $header = null;
         $data = [];
-        if (($handle = fopen('/tmp/import.csv', 'rb')) !== false) {
+        if (($handle = fopen('/tmp/errolda.csv', 'rb')) !== false) {
             while (($row = fgetcsv($handle, 0, ';', '"')) !== false) {
                 if (!$header) {
                     $header = $row;
@@ -57,11 +60,12 @@ final class CsvHelper
         return ['result' => 'success'];
     }
 
-    public function importZozketa($csv): array
+    public function importZozketa($csvZozketa, $hauteskundeaid): array
     {
+        $csvZozketa->move('/tmp', 'zozketa.csv');
         $header = null;
         $data = [];
-        if (($handle = fopen('/tmp/import.csv', 'r')) !== false) {
+        if (($handle = fopen('/tmp/zozketa.csv', 'rb')) !== false) {
             while (($row = fgetcsv($handle, 0, ';', '"')) !== false) {
                 if (!$header) {
                     $header = $row;
@@ -72,9 +76,12 @@ final class CsvHelper
             fclose($handle);
         }
 
+        $hauteskundea = $this->entityManager->getRepository(Hauteskundea::class)->find($hauteskundeaid);
+
         try {
             foreach ($data as $row) {
                 $herritarra = new Herritarra();
+                $herritarra->setHauteskundea($hauteskundea);
                 $herritarra->setDist($row['DIST']);
                 $herritarra->setSecc($row['SECC']);
                 $herritarra->setMesa($row['MESA']);
@@ -89,14 +96,23 @@ final class CsvHelper
                 $herritarra->setNombre($row['NOMBRE']);
                 $herritarra->setApellido1($row['APELLIDO1']);
                 $herritarra->setApellido2($row['APELLIDO2']);
-                $eguna = $row['Eguna'];
-                $herritarra->setEguna($eguna);
-                $hilabetea = $row['Hilabetea'];
-                $herritarra->setHilabetea($hilabetea);
-                $urtea = $row['Urtea'];
-                $herritarra->setUrtea($urtea);
-                $jaiteguna = $urtea.'-'.$hilabetea.'-'.$eguna;
-                $herritarra->setJaioteguna(new \DateTime($jaiteguna));
+                if (!empty($row['Eguna'])) {
+                    $eguna = $row['Eguna'];
+                    $herritarra->setEguna($eguna);
+                }
+                if (!empty($row['Hilabetea'])) {
+                    $hilabetea = $row['Hilabetea'];
+                    $herritarra->setHilabetea($hilabetea);
+                }
+                if (!empty($row['Urtea'])) {
+                    $urtea = $row['Urtea'];
+                    $herritarra->setUrtea($urtea);
+                }
+                if (!empty($row['Eguna']) && !empty($row['Hilabetea']) && !empty($row['Urtea'])) {
+                    $jaiteguna = $urtea.'-'.$hilabetea.'-'.$eguna;
+                    $herritarra->setJaioteguna(new \DateTime($jaiteguna));
+                }
+
                 $herritarra->setActive(in_array($row['CARGOFINAL'], ['P', 'PS1', 'PS2', 'V1', 'V1S1', 'V1S2', 'V2', 'V2S1', 'V2S2']) ? 1 : 0);
                 $this->entityManager->persist($herritarra);
             }
@@ -115,6 +131,51 @@ final class CsvHelper
         $this->entityManager->flush();
 
         return ['result' => 'success'];
+    }
+
+    public function mergeCsv($hauteskundeaid): array
+    {
+        try {
+            /** @var Hauteskundea $hauteskundea */
+            $hauteskundea = $this->entityManager->getRepository(Hauteskundea::class)->find($hauteskundeaid);
+            foreach ($hauteskundea->getHerritarrak() as $herritarra) {
+                $errolda = $this->entityManager->getRepository(Errolda::class)->findOneBy(['ident' => $herritarra->getIdent()]);
+                if (!$errolda) {
+                    throw new EntityNotFoundException('Ez da herritarra Erroldan topatu');
+                }
+                $urtea = $errolda->getAnonac();
+                $hilabetea = $errolda->getMesnac();
+                $eguna = $errolda->getDianac();
+                $mifetxa = \DateTime::createFromFormat('Y-m-d', sprintf('%d-%02d-%02d', $urtea, $hilabetea, $eguna));
+                $herritarra->setJaioteguna($mifetxa);
+                $this->entityManager->persist($herritarra);
+            }
+            $this->entityManager->flush();
+
+            return ['result' => 'success'];
+        } catch (\Exception $exception) {
+            $result = ['result' => 'error'];
+            $result['exception'] = $exception->getMessage();
+            $result['ident'] = $row['IDENT'] ?? '';
+            $nom = $row['NOMBRE'] ?? '';
+            $ape1 = $row['APELLIDO1'] ?? '';
+            $ape2 = $row['APELLIDO2'] ?? '';
+            $result['herritarra'] = $nom.' '.$ape1.' '.$ape2;
+
+            return $result;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function hustuErrolda(): void
+    {
+        $connection = $this->entityManager->getConnection();
+        $platform = $connection->getDatabasePlatform();
+        $sql = $platform->getTruncateTableSQL('errolda', true);
+
+        $connection->executeStatement($sql);
     }
 
     private function setKarguaByCode($code, $lang): ?string
