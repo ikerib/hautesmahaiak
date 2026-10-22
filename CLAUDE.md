@@ -141,7 +141,12 @@ Locale por defecto `eu`, fallback `es`. Las rutas llevan `{_locale}`.
 - Servidor de producción: máquina propia **172.23.64.16** (`ssh root@172.23.64.16`), dominio
   `hautesmahaiak2.pasaia.net` (resuelve directo a esa IP, **solo HTTP en el puerto 80**, sin proxy delante).
   Ficheros en `/root/docker/`: `compose.yml` (aún con ese nombre) y `.env` montado como `.env.local`.
-  Para actualizar: `docker compose pull && docker compose up -d` y `docker compose exec app sh deploy.sh`.
+  **Despliegue** (el servidor no tiene internet, no puede hacer pull):
+  1. `docker build -f docker/DockerfileProd -t ikerib/hautesmahaiak:AAAA-MM-DD[-vN] .` (los assets se compilan dentro).
+  2. `docker save <tag> | gzip -1 | ssh root@172.23.64.16 'gunzip | docker load'`.
+  3. En `/root/docker/compose.yml` cambiar el tag; `docker compose up -d --no-deps app && docker compose exec -T app sh deploy.sh`.
+  - ⚠️ El `.env` del servidor debe ser **644**: se monta como `.env.local` y lo lee `www-data`; con 600 la app da Fatal error.
+  - Copias y vuelta atrás en `/root/backups/`; la imagen anterior a 2026-10 es `ikerib/hautesmahaiak:pre-sso-20261022-0622`.
 - Convención del autor: en producción los ficheros se llaman siempre `compose.yaml` y `Makefile` y viven en
   `dist/` (se copian con `scp -r dist/. servidor:/ruta/`). **Ese `dist/` todavía no existe en este repo**;
   el `compose.yml` y el `Makefile` de la raíz son los de desarrollo.
