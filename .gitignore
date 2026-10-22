@@ -77,3 +77,7 @@ node_modules
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> claude code ###
+/.claude/settings.local.json
+###< claude code ###

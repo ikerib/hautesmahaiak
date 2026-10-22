@@ -5,13 +5,11 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface
 {
     final public const ROLE_ADMIN = 'ROLE_ADMIN';
 
@@ -20,14 +18,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 15)]
+    #[ORM\Column(length: 15, nullable: true)]
     private ?string $NA = null;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
-
-    #[ORM\Column(type: Types::STRING, nullable: true)]
-    private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $izena = null;
@@ -55,13 +50,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $mailto = null;
-
-    public function setPassword(?string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
 
     public function __construct()
     {
@@ -101,7 +89,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_values(array_unique($roles));
     }
 
     public function setRoles(array $roles): static
@@ -125,7 +116,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->NA;
     }
 
-    public function setNA(string $NA): static
+    public function setNA(?string $NA): static
     {
         $this->NA = $NA;
 
@@ -226,10 +217,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->mailto = $mailto;
 
         return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
     }
 }

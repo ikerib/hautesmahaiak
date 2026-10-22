@@ -22,15 +22,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\Security\PasaiaLdapService:
-      class: App\Security\PasaiaLdapService
-      autoconfigure: true
-      arguments:
-        - "%env(resolve:LDAP_IP)%"
-        - "%env(resolve:LDAP_SEARCH_DN)%"
-        - "%env(resolve:LDAP_BASE_DN)%"
-        - "%env(resolve:LDAP_PASSWD)%"
-        - "%env(resolve:LDAP_ADMIN_TALDEAK)%"
-        - "%env(resolve:LDAP_USER_TALDEA)%"
-        - '@Doctrine\ORM\EntityManagerInterface'

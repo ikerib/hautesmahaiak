@@ -83,19 +83,11 @@ eta `.env` fitxategi bat beharko duzu. Moldatu hau zure beharretara:
     MYSQL_PASSWORD=dbpass
     ###< DOCKER ###
     
-    ###> oAuth ###
-    CLIENT_ID='client_id'
-    CLIENT_SECRET='cliente_secret'
-    ###< oAuth###
-    
-    ###> LDAP konexiorako datuak ###
-    LDAP_IP=XXX.XXX.XXX.XXX
-    LDAP_BASE_DN=DC=domain,DC=net
-    LDAP_SEARCH_DN=CN=user,CN=Users,DC=pasaia,DC=net
-    LDAP_PASSWD=pass
-    LDAP_ADMIN_TALDEAK="" # adibidea => 'Rol-taldea1, Rol-taldea2'
-    LDAP_USER_TALDEA="" # adibidea => 'Rol-taldea1, Rol-taldea2'
-    ###< LDAP konexiorako datuak ###
+    ###> pasaia/sso-client-bundle ###
+    SSO_ISSUER_URL=https://sso.pasaia.net
+    SSO_CLIENT_ID=hautesmahaiak
+    SSO_CLIENT_SECRET=secret
+    ###< pasaia/sso-client-bundle ###
     
     ###> symfony/webapp-meta ###
     MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
