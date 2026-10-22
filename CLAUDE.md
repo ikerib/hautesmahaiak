@@ -145,6 +145,8 @@ Locale por defecto `eu`, fallback `es`. Las rutas llevan `{_locale}`.
   1. `docker build -f docker/DockerfileProd -t ikerib/hautesmahaiak:AAAA-MM-DD[-vN] .` (los assets se compilan dentro).
   2. `docker save <tag> | gzip -1 | ssh root@172.23.64.16 'gunzip | docker load'`.
   3. En `/root/docker/compose.yml` cambiar el tag; `docker compose up -d --no-deps app && docker compose exec -T app sh deploy.sh`.
+  - ⚠️ Usar siempre `deploy.sh` (acaba con `chown -R www-data var/`). Un `cache:clear` suelto como root deja
+    `var/cache/prod` de root: la caché no se escribe y `login_throttling` deja de bloquear sin dar error.
   - ⚠️ El `.env` del servidor debe ser **644**: se monta como `.env.local` y lo lee `www-data`; con 600 la app da Fatal error.
   - Copias y vuelta atrás en `/root/backups/`; la imagen anterior a 2026-10 es `ikerib/hautesmahaiak:pre-sso-20261022-0622`.
 - Convención del autor: en producción los ficheros se llaman siempre `compose.yaml` y `Makefile` y viven en
