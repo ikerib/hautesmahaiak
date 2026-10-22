@@ -35,6 +35,13 @@ RUN chown -R www-data:www-data /var/www/html/var
 RUN composer install --prefer-dist --no-scripts --no-interaction --no-dev
 RUN npm install
 
+# Assetak irudian bertan konpilatu: produkzioko zerbitzariak ez du interneterako irteerarik
+RUN APP_ENV=prod APP_DEBUG=0 php bin/console importmap:install \
+    && APP_ENV=prod APP_DEBUG=0 php bin/console tailwind:build --minify \
+    && APP_ENV=prod APP_DEBUG=0 php bin/console asset-map:compile \
+    && APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear \
+    && chown -R www-data:www-data /var/www/html/var
+
 FROM app
 # Update Apache config
 COPY ./docker/default.conf /etc/apache2/sites-available/default.conf

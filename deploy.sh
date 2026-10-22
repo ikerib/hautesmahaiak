@@ -9,11 +9,7 @@ echo -e "${RED}##############################################################"
 echo ""
 php bin/console doctrine:schema:update --force
 
-php bin/console importmap:install
-
-php bin/console tailwind:build
-
-php bin/console asset-map:compile
+# importmap:install, tailwind:build eta asset-map:compile irudia sortzean egiten dira (DockerfileProd)
 
 php bin/console cache:clear
 
