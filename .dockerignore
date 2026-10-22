@@ -1,2 +1,9 @@
 vendor
 var
+.git
+.env.local
+.env.*.local
+.claude
+CLAUDE.md
+.idea
+node_modules
