@@ -22,6 +22,4 @@ return [
     Symfony\UX\Dropzone\DropzoneBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Sentry\SentryBundle\SentryBundle::class => ['prod' => true],
-    Drenso\OidcBundle\DrensoOidcBundle::class => ['all' => true],
-    Pasaia\SsoClientBundle\PasaiaSsoClientBundle::class => ['all' => true],
 ];

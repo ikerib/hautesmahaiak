@@ -1,6 +1,3 @@
-pasaia_sso_client:
-    resource: '@PasaiaSsoClientBundle/config/routes.yaml'
-
 controllers:
     resource:
         path: ../src/Controller/

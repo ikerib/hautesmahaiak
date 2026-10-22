@@ -1,9 +1,11 @@
 security:
-  # Autentifikazioa SSO Municipal-ak egiten du (OIDC). Rolak SSO-ak kalkulatzen ditu bezero honentzat:
-  # ROL-Antolakuntza_Informatika => ROLE_ADMIN.
+  # Login sinplea: erabiltzaile bakarra, kredentzialak .env-en (APP_LOGIN_USER / APP_LOGIN_PASSWORD).
+  # Ikus App\Security\EnvLoginAuthenticator.
   providers:
-    app_oidc:
-      id: App\Security\OidcAppUserProvider
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: username
 
   firewalls:
     dev:
@@ -12,18 +14,16 @@ security:
 
     main:
       lazy: true
-      provider: app_oidc
-      oidc:
-        check_path: /sso/callback
-        login_path: /sso/login
-        user_identifier_property: sub
-        enable_retrieve_user_info: true
-        enable_end_session_listener: true
+      provider: app_user_provider
+      custom_authenticator: App\Security\EnvLoginAuthenticator
       logout:
-        path: /sso/logout
+        path: app_logout
+        target: app_login
+      login_throttling:
+        max_attempts: 5          # per minute ...
 
   # Note: Only the *first* access control that matches will be used
   # Herritarren kontsulta publikoa da; kudeaketa bakarrik babesten da.
   access_control:
-    - { path: ^/sso, roles: PUBLIC_ACCESS }
+    - { path: ^/login, roles: PUBLIC_ACCESS }
     - { path: ^/kudeatu, roles: ROLE_ADMIN }

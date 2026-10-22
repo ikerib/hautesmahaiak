@@ -24,7 +24,7 @@ Mantener esa convención: entidades, variables y mensajes nuevos en euskera.
   `symfonycasts/tailwind-bundle`, **Flowbite** (+ `tales-from-a-dev/flowbite-bundle` como tema de formularios)
 - Symfony UX: Stimulus, Turbo (Drive + Frames + Streams), LiveComponent, TwigComponent, Dropzone, Icons
 - Editor de texto enriquecido: **Trix** (los campos de mensajes son `HiddenType` + editor Trix)
-- Autenticación: **SSO Municipal de Pasaia** (OIDC + PKCE) vía `pasaia/sso-client-bundle` (Packagist, v1.2) sobre `drenso/symfony-oidc-bundle`
+- Autenticación: login de formulario simple con **un único usuario** definido en `.env` (`APP_LOGIN_USER` / `APP_LOGIN_PASSWORD`)
 - Paginación: Pagerfanta. Errores: Sentry. Mail en dev: Mailpit (`compose.override.yaml`)
 - **No hay tests** (`tests/` no existe) ni migraciones: el esquema se aplica con `doctrine:schema:update --force`.
 
@@ -61,7 +61,7 @@ tailwind:build, asset-map:compile, cache:clear y `chown www-data var/`.
   `active` (smallint).
 - **Errolda** (padrón): tabla **temporal** (`ident`, `dianac`, `mesnac`, `anonac`) que solo sirve para
   completar la fecha de nacimiento al importar; se vacía con TRUNCATE al terminar.
-- **User**: `username` (= claim `sub` del SSO), `NA` (employee_id), `roles` (JSON, los pone el SSO en cada login),
+- **User**: `username` (= `APP_LOGIN_USER`), `NA` (opcional, heredado), `roles` (JSON, `ROLE_ADMIN` al hacer login),
   `mailfrom`/`mailto` para las notificaciones de sustitución. Sin contraseña.
 
 ### Lógica de cargos y estados
@@ -101,22 +101,20 @@ En el paso 5, `App\Utils\CsvHelper`: `importErrolda()` → `importZozketa()` →
 | `/kudeatu[/{_locale}]/…` | `HauteskundeaController` | CRUD + wizard + `hustu` (borra los ciudadanos de una elección) |
 | `/kudeatu/{_locale}/herritarra/{hauteskundeaid}/index` | `HerritarraController` | Filtros `dists[]`, `seccs[]`, `mesas[]`, `egoeras[]`, `query`; responde Turbo Stream si se pide |
 | `/kudeatu/user/…` | `UserController` | CRUD de usuarios |
-| `/sso/login`, `/sso/callback`, `/sso/logout` | `pasaia/sso-client-bundle` | Login vía SSO Municipal |
+| `/login`, `/logout` | `SecurityController` | Login con el usuario del `.env` |
 | `/healthcheck` | `DefaultController` | **Lanza una excepción a propósito** (prueba de Sentry), no es un healthcheck real |
 
 ### Seguridad (`src/Security`)
 
-- Toda la autenticación la hace el **SSO Municipal** (`https://sso.pasaia.net`, clientes `hautesmahaiak` y `hautesmahaiak-dev`).
-  La app no toca LDAP. Rutas del bundle: `/sso/login`, `/sso/callback`; `/sso/logout` lo genera
-  `security.route_loader.logout` (en Twig, `logout_path()`).
-- `OidcAppUserProvider` hace upsert de la entidad `User` local por `username` = claim `sub` (login de AD) en
-  cada login: copia `email`, `name`, `employee_id` (→ `NA`), `description`, `department` y **los roles del
-  claim `roles`**. No toca `mailfrom`/`mailto`, que se editan en la app.
-- Los roles los calcula el SSO por cliente: el grupo `CN=ROL-Antolakuntza_Informatika,CN=Users,DC=pasaia,DC=net`
-  (informática) → `ROLE_ADMIN`. Se configura en el servidor SSO con `app:client:configure-access`, no aquí.
-- `access_control`: `^/sso` público, `^/kudeatu` → `ROLE_ADMIN`; el resto (consulta ciudadana) es público.
-- Variables: `SSO_ISSUER_URL`, `SSO_CLIENT_ID`, `SSO_CLIENT_SECRET` (el secret, en Vaultwarden y `.env.local`).
-  No crear `config/packages/drenso_oidc.yaml` ni variables `OIDC_*`: el bundle configura drenso solo.
+- `EnvLoginAuthenticator`: formulario en `/login` (`SecurityController`, `templates/security/login.html.twig`).
+  Compara `_username`/`_password` con `APP_LOGIN_USER`/`APP_LOGIN_PASSWORD` del `.env` usando `hash_equals`,
+  con token CSRF `authenticate`. Si alguna de las dos variables está vacía, nadie puede entrar.
+- Tras validar, carga o crea la entidad `User` con ese `username` y le pone `ROLE_ADMIN`. La entidad se
+  mantiene porque `mailfrom`/`mailto` se usan para los avisos de sustitución y la cabecera enlaza a sus ajustes.
+- `access_control`: `^/login` público, `^/kudeatu` → `ROLE_ADMIN`; el resto (consulta ciudadana) es público.
+  Logout en `/logout` (en Twig, `logout_path()`); `login_throttling` a 5 intentos/minuto.
+- Historia: hasta 2024 era LDAP + Giltza; en 2026-10 se intentó el SSO Municipal pero el servidor de producción
+  no llega a `sso.pasaia.net`, así que se dejó este login simple.
 
 ### Frontend
 
@@ -144,9 +142,6 @@ Locale por defecto `eu`, fallback `es`. Las rutas llevan `{_locale}`.
   `hautesmahaiak2.pasaia.net` (resuelve directo a esa IP, **solo HTTP en el puerto 80**, sin proxy delante).
   Ficheros en `/root/docker/`: `compose.yml` (aún con ese nombre) y `.env` montado como `.env.local`.
   Para actualizar: `docker compose pull && docker compose up -d` y `docker compose exec app sh deploy.sh`.
-- Clientes SSO (creados el 2026-10-22): `hautesmahaiak` → `http://hautesmahaiak2.pasaia.net/sso/callback` (prod) y
-  `hautesmahaiak-dev` → `http://localhost/sso/callback` (dev). Scopes `openid profile email roles ldap_profile`;
-  acceso solo `ROL-Antolakuntza_Informatika` → `ROLE_ADMIN`. Secrets en Vaultwarden.
 - Convención del autor: en producción los ficheros se llaman siempre `compose.yaml` y `Makefile` y viven en
   `dist/` (se copian con `scp -r dist/. servidor:/ruta/`). **Ese `dist/` todavía no existe en este repo**;
   el `compose.yml` y el `Makefile` de la raíz son los de desarrollo.
@@ -162,3 +157,6 @@ Locale por defecto `eu`, fallback `es`. Las rutas llevan `{_locale}`.
 - En `ordezkatu` el email se envía `->to($user->getMailfrom())` (no a `mailto`).
 - Tras cambiar entidades, no hay migraciones: `bin/console doctrine:schema:update --dump-sql` para revisar
   y `--force` para aplicar.
+- **Bloqueo de red (2026-10-22):** 172.23.64.16 no tiene salida a internet ni llega a `sso.pasaia.net`
+  (172.28.64.27, puertos 80/443 sin respuesta). Mientras no se abra esa regla, no se puede usar el SSO Municipal
+  en ese servidor. Las imágenes se le pasan con `docker save | ssh … docker load` (no puede hacer pull).

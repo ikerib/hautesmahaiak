@@ -83,11 +83,10 @@ eta `.env` fitxategi bat beharko duzu. Moldatu hau zure beharretara:
     MYSQL_PASSWORD=dbpass
     ###< DOCKER ###
     
-    ###> pasaia/sso-client-bundle ###
-    SSO_ISSUER_URL=https://sso.pasaia.net
-    SSO_CLIENT_ID=hautesmahaiak
-    SSO_CLIENT_SECRET=secret
-    ###< pasaia/sso-client-bundle ###
+    ###> ikerib/hautesmahaiak ###
+    APP_LOGIN_USER=admin
+    APP_LOGIN_PASSWORD=pasahitz-sendoa
+    ###< ikerib/hautesmahaiak ###
     
     ###> symfony/webapp-meta ###
     MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
